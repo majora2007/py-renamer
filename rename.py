@@ -120,7 +120,7 @@ if __name__ == '__main__':
 
 
     #root_dir = os.path.abspath('.')
-    root_dir = os.path.cwd()
+    root_dir = os.getcwd()
     file_infos = generate_episode_infos(root_dir)
 
     renames = generate_renames(file_infos)
