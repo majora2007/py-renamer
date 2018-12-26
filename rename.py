@@ -100,6 +100,7 @@ def generate_episode_infos(root_dir):
 
 def write_renames(root_dir, renames):
     """ Responsible for renaming original files with standarized names """
+    print('Updating files at {0}'.fromat(root_dir))
     for rename in renames:
         os.rename(os.path.join(root_dir, rename.original_filename), os.path.join(root_dir, rename.new_filename))
 
