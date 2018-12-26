@@ -74,7 +74,7 @@ def generate_renames(infos):
         print('Using derived season renamer')
         renames = generate_derived_season_renames(infos)
     else:
-        print('Using standard renamer')
+        print('Using standard renamer') # I can remove this code and just force season in the info objects
         renames = generate_forced_season_renames(infos)
     
     return renames
@@ -121,7 +121,6 @@ if __name__ == '__main__':
     print('Verbose Mode: {0}'.format(verbose))
 
 
-    #root_dir = os.path.abspath('.')
     root_dir = os.getcwd()
     file_infos = generate_episode_infos(root_dir)
 
