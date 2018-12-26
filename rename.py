@@ -119,7 +119,8 @@ if __name__ == '__main__':
     print('Verbose Mode: {0}'.format(verbose))
 
 
-    root_dir = os.path.abspath('.')
+    #root_dir = os.path.abspath('.')
+    root_dir = os.path.cwd()
     file_infos = generate_episode_infos(root_dir)
 
     renames = generate_renames(file_infos)
