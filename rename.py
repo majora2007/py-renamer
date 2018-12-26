@@ -131,4 +131,4 @@ if __name__ == '__main__':
     
     if not dry_run:
         print('Renaming files')
-        #write_renames(root_dir, renames)
+        write_renames(root_dir, renames)
