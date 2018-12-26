@@ -53,7 +53,7 @@ def generate_derived_season_renames(infos):
     renames = []
     
     for info in infos:
-        new_name = show_name + ' - ' + info.season + info.episode + ' - ' + info.title
+        new_name = show_name + ' - ' + info.season + info.episode + ' - ' + info.title + '.' + info.extension
         renames.append(EpisodeRename(info.original_filename, new_name))
     return renames
 
@@ -89,6 +89,7 @@ def generate_episode_infos(root_dir):
                 parts = os.path.splitext(file)
                 filename = parts[0]
                 info = EpisodeInfo(root_dir, filename)
+                info.original_filename = file
                 info.episode = parse.parse_episode(filename)
                 info.part_num = parse.parse_episode_part(filename)
                 info.subtitle = find_subtitle(root_dir, filename)
@@ -100,7 +101,7 @@ def generate_episode_infos(root_dir):
 
 def write_renames(root_dir, renames):
     """ Responsible for renaming original files with standarized names """
-    print('Updating files at {0}'.fromat(root_dir))
+    print('Updating files at {0}'.format(root_dir))
     for rename in renames:
         os.rename(os.path.join(root_dir, rename.original_filename), os.path.join(root_dir, rename.new_filename))
 
@@ -131,4 +132,4 @@ if __name__ == '__main__':
     
     if not dry_run:
         print('Renaming files')
-        #write_renames(root_dir, renames)
+        write_renames(root_dir, renames)
