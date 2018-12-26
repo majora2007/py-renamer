@@ -126,7 +126,7 @@ def parse_episode(filename):
 
 def clean_episode_title(filename):
     """ Removes special seperators like -,_  and leading spaces"""
-    return filename.replace('_', ' ').replace('-', '').lstrip()
+    return filename.replace('_', ' ').replace('-', ' ').lstrip()
 
 def is_special_season(season_str):
     """ Returns True if Season is formated as Special (ie S00) """
