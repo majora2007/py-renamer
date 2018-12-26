@@ -27,12 +27,12 @@ class Test_TestParse(unittest.TestCase):
     
     def test_parse_episode_part(self):
         self.assertEqual(parse.parse_episode_part('S01E02'), 0)
-        self.assertEqual(parse.parse_episode_part('Grojband - S01E01A'), 1)
-        self.assertEqual(parse.parse_episode_part('2x01C'), 3)
-        self.assertEqual(parse.parse_episode_part('S01E02B'), 2)
-        self.assertEqual(parse.parse_episode_part('Ep1a'), 1)
+        self.assertEqual(parse.parse_episode_part('Grojband - S01E01A'), 0)
+        self.assertEqual(parse.parse_episode_part('2x01C'), 2)
+        self.assertEqual(parse.parse_episode_part('S01E02B'), 1)
+        self.assertEqual(parse.parse_episode_part('Ep1a'), 0)
         self.assertEqual(parse.parse_episode_part('Ep1'), 0)
-        self.assertEqual(parse.parse_episode_part('Show - 1a'), 1)
+        self.assertEqual(parse.parse_episode_part('Show - 1a'), 0)
         self.assertEqual(parse.parse_episode_part('Show - 1'), 0)
         self.assertEqual(parse.parse_episode_part('Grojband - S01E01'), 0)
     

@@ -71,6 +71,30 @@ class Test_TestRename(unittest.TestCase):
         result = rename.generate_episode_infos(root_dir)
         self.assertListEqual(result, weekenders_part_infos)
     
+    def test_generate_part_renames(self):
+        rename.show_name = 'The Weekenders'
+        result = rename.generate_part_renames(weekenders_part_infos)
+        
+        correct_renames = []
+        correct_renames.append(EpisodeRename('', 'The Weekenders - S01E01 - Crush Test Dummies.mp4'))
+        correct_renames.append(EpisodeRename('', 'The Weekenders - S01E02 - Grow Up.mp4'))
+        correct_renames.append(EpisodeRename('', 'The Weekenders - S01E03 - Shoes of Destiny.mp4'))
+        correct_renames.append(EpisodeRename('', 'The Weekenders - S01E04 - Sense and Sensitivity.mp4'))
+        self.assertListEqual(result, correct_renames)
+    
+    def test_generate_multiple_part_per_file_renames(self):
+        rename.show_name = 'Producing Parker'
+        rename.eps_per_file = 2
+        infos = rename.generate_episode_infos(os.path.abspath('./test-data/producing-parker - standard derived seasons/'))
+        result = rename.generate_multiple_part_per_file_renames(infos)
+        
+        correct_renames = []
+        correct_renames.append(EpisodeRename('producing-parker-season-1-episode-1-producing-parker.mp4', 'Producing Parker - S01E01-E02 - producing parker.mp4'))
+        correct_renames.append(EpisodeRename('producing-parker-season-1-episode-2-producing-parker.mp4', 'Producing Parker - S01E03-E04 - producing parker.mp4'))
+        correct_renames.append(EpisodeRename('producing-parker-season-2-episode-1-producing-parker.mp4', 'Producing Parker - S02E01-E02 - producing parker.mp4'))
+        self.assertListEqual(result, correct_renames)
+
+    
     def test_generate_derived_season_renames(self):
         rename.show_name = 'Producing Parker'
         infos = rename.generate_episode_infos(os.path.abspath('./test-data/producing-parker - standard derived seasons/'))

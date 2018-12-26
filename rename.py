@@ -42,11 +42,27 @@ def info_has_parts(infos):
 
 def generate_part_renames(infos):
     """ Uses a renamer suitable for handling files with parts (S01E01A -> S01E01, S01E01B -> S01E02). """
-    return []
+    renames = []
+    for info in infos:
+        episode_num = int(info.episode.split('E')[1])
+        new_num = episode_num * info.part_num
+        if episode_num > 1 and info.part_num is 1:
+            new_num = new_num + 1
+        new_name = show_name + ' - ' + info.season + 'E' + parse.format_num(new_num) + ' - ' + info.title + '.' + info.extension
+        renames.append(EpisodeRename(info.original_filename, new_name))
+    return renames
 
 def generate_multiple_part_per_file_renames(infos):
     """ Uses a renamer suitable for handling files with Multiple Episodes contained within (S01E01 -> S01E01-E02). """
-    return []
+    renames = []
+    for info in infos:
+        episode_num = int(info.episode.split('E')[1])
+        end_num = episode_num*eps_per_file
+        episode_seg = 'E' + parse.format_num(end_num-1) + '-E' + parse.format_num(end_num)
+        new_name = show_name + ' - ' + info.season + episode_seg + ' - ' + info.title + '.' + info.extension
+        renames.append(EpisodeRename(info.original_filename, new_name))
+
+    return renames
 
 def generate_derived_season_renames(infos):
     """ Uses a renamer suitable for handling files with derived seasons. (Season 1 Episode 1 -> S01E01). """
@@ -57,10 +73,6 @@ def generate_derived_season_renames(infos):
         renames.append(EpisodeRename(info.original_filename, new_name))
     return renames
 
-def generate_forced_season_renames(infos):
-    """ Uses a renamer suitable for handling files by forcing a season on (Episode 1 -> S01E01). """
-    return []
-
 def generate_renames(infos):
     """ Given a list of EpisodeInfo objects, generate EpisodeRename objects using a renaming strategy best based on flags and metadata. """
     renames = []
@@ -70,13 +82,9 @@ def generate_renames(infos):
     elif eps_per_file > 1:
         print('Using Multiple Episodes per File Renamer')
         renames = generate_multiple_part_per_file_renames(infos)
-    elif season_num is None:
+    else:
         print('Using derived season renamer')
         renames = generate_derived_season_renames(infos)
-    else:
-        print('Using standard renamer') # I can remove this code and just force season in the info objects
-        renames = generate_forced_season_renames(infos)
-    
     return renames
 
 
@@ -95,7 +103,10 @@ def generate_episode_infos(root_dir):
                 info.subtitle = find_subtitle(root_dir, filename)
                 info.extension = parts[1].replace('.', '')
                 info.title = parse.parse_episode_title(filename)
-                info.season = parse.parse_season(filename)
+                if season_num is None:
+                    info.season = parse.parse_season(filename)
+                else:
+                    info.season = 'S' + parse.format_num(int(season_num))
                 file_infos.append(info)
     return file_infos
 
@@ -104,6 +115,10 @@ def write_renames(root_dir, renames):
     print('Updating files at {0}'.format(root_dir))
     for rename in renames:
         os.rename(os.path.join(root_dir, rename.original_filename), os.path.join(root_dir, rename.new_filename))
+
+# Todo: figure out how to remove this global
+global season_num
+season_num = None
 
 if __name__ == '__main__':
     # Required Args
