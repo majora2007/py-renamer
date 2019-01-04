@@ -7,3 +7,7 @@ Download this from git and place somewhere on your computer. Put that location i
 # How to run
 `python rename.py --show_name "My show here"`
 This is the minimum required command to execute. You can get more commands from the rename.py file.
+
+# BUGS:
+producing-parker-season-2-episode-11-3.0-parker.mp4 mapped to producing parker s03e06 - .mp4
+producing-parker-season-2-episode-6-15-minutes-in-parker.mp4 mapped to producing parker s02E15 - minutes in parker.mp4

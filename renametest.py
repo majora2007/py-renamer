@@ -38,6 +38,14 @@ info.subtitle = None
 info.season = 'S01'
 info.title = 'Sense and Sensitivity'
 weekenders_part_infos.append(info)
+info = EpisodeInfo(root_dir, 'S01E03a - Shoes.mp4')
+info.episode = 'E03'
+info.extension = 'mp4'
+info.part_num = 1
+info.subtitle = None
+info.season = 'S01'
+info.title = 'Shoes'
+weekenders_part_infos.append(info)
 
 producing_parkers = []
 info = EpisodeInfo(root_dir, 'producing-parker-season-1-episode-1-producing-parker')
@@ -74,12 +82,13 @@ class Test_TestRename(unittest.TestCase):
     def test_generate_part_renames(self):
         rename.show_name = 'The Weekenders'
         result = rename.generate_part_renames(weekenders_part_infos)
-        
+
         correct_renames = []
-        correct_renames.append(EpisodeRename('', 'The Weekenders - S01E01 - Crush Test Dummies.mp4'))
-        correct_renames.append(EpisodeRename('', 'The Weekenders - S01E02 - Grow Up.mp4'))
-        correct_renames.append(EpisodeRename('', 'The Weekenders - S01E03 - Shoes of Destiny.mp4'))
-        correct_renames.append(EpisodeRename('', 'The Weekenders - S01E04 - Sense and Sensitivity.mp4'))
+        correct_renames.append(EpisodeRename('S01E01a - Crush Test Dummies.mp4', 'The Weekenders - S01E01 - Crush Test Dummies.mp4'))
+        correct_renames.append(EpisodeRename('S01E01b - Grow Up.mp4', 'The Weekenders - S01E02 - Grow Up.mp4'))
+        correct_renames.append(EpisodeRename('S01E02a - Shoes of Destiny.mp4', 'The Weekenders - S01E03 - Shoes of Destiny.mp4'))
+        correct_renames.append(EpisodeRename('S01E02b - Sense and Sensitivity.mp4', 'The Weekenders - S01E04 - Sense and Sensitivity.mp4'))
+        correct_renames.append(EpisodeRename('S01E03a - Shoes.mp4', 'The Weekenders - S01E05 - Shoes.mp4'))
         self.assertListEqual(result, correct_renames)
     
     def test_generate_multiple_part_per_file_renames(self):
@@ -87,7 +96,7 @@ class Test_TestRename(unittest.TestCase):
         rename.eps_per_file = 2
         infos = rename.generate_episode_infos(os.path.abspath('./test-data/producing-parker - standard derived seasons/'))
         result = rename.generate_multiple_part_per_file_renames(infos)
-        
+
         correct_renames = []
         correct_renames.append(EpisodeRename('producing-parker-season-1-episode-1-producing-parker.mp4', 'Producing Parker - S01E01-E02 - producing parker.mp4'))
         correct_renames.append(EpisodeRename('producing-parker-season-1-episode-2-producing-parker.mp4', 'Producing Parker - S01E03-E04 - producing parker.mp4'))

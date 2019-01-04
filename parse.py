@@ -9,12 +9,12 @@ EPISODE_NUM_REGEXS = [
     re.compile(r'.*[-_]?season.{1}(?P<Season>\d+).{1}episode.{1}(?P<Episode>\d+)', re.IGNORECASE),
     # S01E01, E01, Episode 1, Show - S01E01, S01E01-E02
     re.compile(r'(?P<Show>.*?)(S{1}?\d+)(E|x)?(?P<Episode>\d+-?E?\d+)', re.IGNORECASE),
-    # 1x01, Show - 1x01, 1x01a
-    re.compile(r'(?P<Show>.*?)(\d{1,3})x?(?P<Episode>\d+)', re.IGNORECASE),
     # Ep1
     re.compile(r'(?P<Show>.*?)(Ep)?(?P<Episode>\d+)', re.IGNORECASE),
     # Happy Days 11-01
     re.compile(r'(?P<Show>.*?)(S?\d+)-?(?P<Episode>\d+-?E?\d+)', re.IGNORECASE),
+    # 1x01, Show - 1x01, 1x01a
+    re.compile(r'(?P<Show>.*?)(\d{1,3})x?(?P<Episode>\d+)', re.IGNORECASE),
 ]
 
 SEASON_REGEX = [

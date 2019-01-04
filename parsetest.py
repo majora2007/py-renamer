@@ -23,16 +23,17 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode('Grojband - some title'), None)
         self.assertEqual(parse.parse_episode('Happy Days 11-01'), 'E01')
         self.assertEqual(parse.parse_episode('producing-parker-season-2-episode-1-producing-parker'), 'E01')
+        self.assertEqual(parse.parse_episode('Happy_Days_-_3-21_-_Fonzie_Moves_In_-_DVD2XviD -> Happy Days - S03E01 - Fonzie Moves In DVD2XviD'), 'E21')
         
     
     def test_parse_episode_part(self):
         self.assertEqual(parse.parse_episode_part('S01E02'), 0)
-        self.assertEqual(parse.parse_episode_part('Grojband - S01E01A'), 0)
-        self.assertEqual(parse.parse_episode_part('2x01C'), 2)
-        self.assertEqual(parse.parse_episode_part('S01E02B'), 1)
-        self.assertEqual(parse.parse_episode_part('Ep1a'), 0)
+        self.assertEqual(parse.parse_episode_part('Grojband - S01E01A'), 1)
+        self.assertEqual(parse.parse_episode_part('2x01C'), 3)
+        self.assertEqual(parse.parse_episode_part('S01E02B'), 2)
+        self.assertEqual(parse.parse_episode_part('Ep1a'), 1)
         self.assertEqual(parse.parse_episode_part('Ep1'), 0)
-        self.assertEqual(parse.parse_episode_part('Show - 1a'), 0)
+        self.assertEqual(parse.parse_episode_part('Show - 1a'), 1)
         self.assertEqual(parse.parse_episode_part('Show - 1'), 0)
         self.assertEqual(parse.parse_episode_part('Grojband - S01E01'), 0)
     

@@ -43,11 +43,12 @@ def info_has_parts(infos):
 def generate_part_renames(infos):
     """ Uses a renamer suitable for handling files with parts (S01E01A -> S01E01, S01E01B -> S01E02). """
     renames = []
+    highest_part = max(infos, key=lambda info: info.part_num).part_num
+    print('highest part: {0}'.format(highest_part))
     for info in infos:
         episode_num = int(info.episode.split('E')[1])
-        new_num = episode_num * info.part_num
-        if episode_num > 1 and info.part_num is 1:
-            new_num = new_num + 1
+        # (Ep_num - 1) * highest_part + part
+        new_num = (episode_num - 1) * highest_part + info.part_num
         new_name = show_name + ' - ' + info.season + 'E' + parse.format_num(new_num) + ' - ' + info.title + '.' + info.extension
         renames.append(EpisodeRename(info.original_filename, new_name))
     return renames
