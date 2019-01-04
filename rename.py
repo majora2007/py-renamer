@@ -91,7 +91,7 @@ def generate_renames(infos):
 
 def generate_episode_infos(root_dir):
     file_infos = []
-    for _, _, files in os.walk(root_dir, topdown=True):
+    for _, _, files in os.walk(root_dir, topdown=False):
         files.sort()
         for file in files:
             if parse.is_media_file(file):
