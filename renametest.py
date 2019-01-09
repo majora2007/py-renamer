@@ -114,6 +114,21 @@ class Test_TestRename(unittest.TestCase):
         correct_renames.append(EpisodeRename('producing-parker-season-1-episode-2-producing-parker.mp4', 'Producing Parker - S01E02 - producing parker.mp4'))
         correct_renames.append(EpisodeRename('producing-parker-season-2-episode-1-producing-parker.mp4', 'Producing Parker - S02E01 - producing parker.mp4'))
         self.assertListEqual(result, correct_renames)
+
+    def test_generate_derived_season_renames_2(self):
+        infos = []
+        info = EpisodeInfo(root_dir, 'producing-parker-season-2-episode-6-15-minutes-in-parker.mp4')
+        info.episode = 'E06'
+        info.extension = 'mp4'
+        info.part_num = 0
+        info.subtitle = None
+        info.season = 'S02'
+        info.title = '15 minutes in parker'
+        infos.append(info)
+        result = rename.generate_derived_season_renames(infos)
+        
+        self.assertListEqual(result, [EpisodeRename('producing-parker-season-2-episode-6-15-minutes-in-parker.mp4', 'Producing Parker - S02E06 - 15 minutes in parker.mp4')])
+        
     
     def test_info_has_parts(self):
         self.assertTrue(rename.info_has_parts(weekenders_part_infos))

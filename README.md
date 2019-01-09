@@ -9,11 +9,8 @@ Download this from git and place somewhere on your computer. Put that location i
 This is the minimum required command to execute. You can get more commands from the rename.py file.
 
 # BUGS:
-producing-parker-season-2-episode-6-15-minutes-in-parker.mp4 mapped to producing parker s02E15 - minutes in parker.mp4
 Happy_Days_-_3-21_-_Fonzie_Moves_In_-_DVD2XviD -> Happy Days - S03E01 - Fonzie Moves In DVD2XviD
 
-Rename Tests:
-TMNT - S05E21 - Planet Of The Turtleoids Part 1.mp4 -> Teenage Mutant Ninja Turtles - S05E21 - .mp4
 
 # TODO:
 * Implement Subtitle renaming and enhance to suport multiple subtitles per file (or handle normally)
