@@ -7,6 +7,8 @@ SUBTITLE_EXTENSIONS = ('.srt')
 EPISODE_NUM_REGEXS = [
     # show-season-1-episode-1
     re.compile(r'.*[-_]?season.{1}(?P<Season>\d+).{1}episode.{1}(?P<Episode>\d+)', re.IGNORECASE),
+    # Martin Mystery 201
+    re.compile(r'(?P<Show>.*?)\s(\d{1})(?P<Episode>\d+)', re.IGNORECASE),
     # S01E01, E01, Episode 1, Show - S01E01, S01E01-E02
     re.compile(r'(?P<Show>.*?)(S{1}?\d+)(E|x)?(?P<Episode>\d+-?E?\d+)', re.IGNORECASE),
     # 1x01, Show - 1x01, 1x01a
@@ -15,8 +17,7 @@ EPISODE_NUM_REGEXS = [
     re.compile(r'(?P<Show>.*?)(Ep)?(?P<Episode>\d+)', re.IGNORECASE),
     # Happy Days 11-01
     re.compile(r'(?P<Show>.*?)(S?\d+)-?(?P<Episode>\d+-?E?\d+)', re.IGNORECASE),
-    # Mystery Martin 201
-    re.compile(r'(?P<Show>.*?)(\d{1})(?P<Episode>\d+)', re.IGNORECASE)
+    
 
 ]
 
@@ -29,7 +30,7 @@ SEASON_REGEX = [
     re.compile(r'(?P<Show>.*?)(?P<Season>\d+)-\d+.*', re.IGNORECASE),
     # show-season-1-eps-1
     re.compile(r'.*[-_]?season.{1}(?P<Season>\d+)', re.IGNORECASE),
-    # Mystery Martin 201
+    # Martin Mystery 201
     re.compile(r'(?P<Show>.*?)(?P<Season>\d{1})(?P<Episode>\d+)', re.IGNORECASE)
 ]
 

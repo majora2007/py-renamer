@@ -12,7 +12,7 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_season('producing-parker-season-2-episode-1-producing-parker'), 'S02')
         #self.assertEqual(parse.parse_season('Happy_Days_-_3-21_-_Fonzie_Moves_In_-_DVD2XviD'), 'S03')
         #self.assertEqual(parse.parse_season('Braceface - 201 - The Social Fabric part 1.mkv'), 'S02')
-        self.assertEqual(parse.parse_season('Mystery Martin 201'), 'S02')
+        self.assertEqual(parse.parse_season('Martin Mystery 201'), 'S02')
         
     
     def test_parse_episode(self):
@@ -28,7 +28,8 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode('producing-parker-season-2-episode-1-producing-parker'), 'E01')
         #self.assertEqual(parse.parse_episode('Happy_Days_-_3-21_-_Fonzie_Moves_In_-_DVD2XviD'), 'E21')
         #self.assertEqual(parse.parse_episode('Braceface - 201 - The Social Fabric part 1.mkv'), 'E01')
-        self.assertEqual(parse.parse_episode('Mystery Martin 201'), 'E01')
+        self.assertEqual(parse.parse_episode('Martin Mystery 201'), 'E01')
+        self.assertEqual(parse.parse_episode('martin mystery 325 its alive part 1 [tv.dtv.mere].avi'), 'E25')
     
     def test_parse_episode_part(self):
         self.assertEqual(parse.parse_episode_part('S01E02'), 0)
