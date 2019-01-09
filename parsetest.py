@@ -11,8 +11,9 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_season('S01E02a - Shoes of Destiny'), 'S01')
         self.assertEqual(parse.parse_season('producing-parker-season-2-episode-1-producing-parker'), 'S02')
         #self.assertEqual(parse.parse_season('Happy_Days_-_3-21_-_Fonzie_Moves_In_-_DVD2XviD'), 'S03')
-        #self.assertEqual(parse.parse_season('Braceface - 201 - The Social Fabric part 1.mkv'), 'S02')
+        self.assertEqual(parse.parse_season('Braceface - 201 - The Social Fabric part 1.mkv'), 'S02')
         self.assertEqual(parse.parse_season('Martin Mystery 201'), 'S02')
+        self.assertEqual(parse.parse_season('producing-parker-season-2-episode-11-3.0-parker.mp4'), 'S02')
         
     
     def test_parse_episode(self):
@@ -27,9 +28,11 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode('Happy Days 11-01'), 'E01')
         self.assertEqual(parse.parse_episode('producing-parker-season-2-episode-1-producing-parker'), 'E01')
         #self.assertEqual(parse.parse_episode('Happy_Days_-_3-21_-_Fonzie_Moves_In_-_DVD2XviD'), 'E21')
-        #self.assertEqual(parse.parse_episode('Braceface - 201 - The Social Fabric part 1.mkv'), 'E01')
+        self.assertEqual(parse.parse_episode('Braceface - 201 - The Social Fabric part 1.mkv'), 'E01')
         self.assertEqual(parse.parse_episode('Martin Mystery 201'), 'E01')
         self.assertEqual(parse.parse_episode('martin mystery 325 its alive part 1 [tv.dtv.mere].avi'), 'E25')
+        self.assertEqual(parse.parse_episode('producing-parker-season-2-episode-11-3.0-parker.mp4'), 'E11')
+        
     
     def test_parse_episode_part(self):
         self.assertEqual(parse.parse_episode_part('S01E02'), 0)
@@ -48,6 +51,7 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode_title('S01E02a-title'), 'title')
         self.assertEqual(parse.parse_episode_title('Show name - S01E01 - Title here'), 'Title here')
         self.assertEqual(parse.parse_episode_title('[hash]_show_1x01_-_title_goes_here'), 'title goes here')
+        self.assertEqual(parse.parse_episode_title('TMNT - S05E21 - Planet Of The Turtleoids Part 1'), 'Planet Of The Turtleoids Part 1')
 
     def test_is_media_file(self):
         self.assertEqual(parse.is_media_file('joe.mp4'), True)

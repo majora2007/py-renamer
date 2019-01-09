@@ -22,14 +22,14 @@ EPISODE_NUM_REGEXS = [
 ]
 
 SEASON_REGEX = [
+    # show-season-1-eps-1
+    re.compile(r'.*[-_]?season.{1}(?P<Season>\d+)', re.IGNORECASE),
     # S01E01
     re.compile(r'(?P<Show>.*?)S(?P<Season>\d+)E?\d+.*', re.IGNORECASE),
     # 1x02
     re.compile(r'(?P<Show>.*?)(?P<Season>\d+)x\d+.*', re.IGNORECASE),
     # Happy Days 11-01 
     re.compile(r'(?P<Show>.*?)(?P<Season>\d+)-\d+.*', re.IGNORECASE),
-    # show-season-1-eps-1
-    re.compile(r'.*[-_]?season.{1}(?P<Season>\d+)', re.IGNORECASE),
     # Martin Mystery 201
     re.compile(r'(?P<Show>.*?)(?P<Season>\d{1})(?P<Episode>\d+)', re.IGNORECASE)
 ]
@@ -46,7 +46,10 @@ EPISODE_TITLE_REGEX = [
     #re.compile(r'(.*)?\d+(?P<Part>[a-d]{1})(?P<EpisodeTitle>.+)', re.IGNORECASE),
     # For filenames without a part
     #re.compile(r'(.*)?\d+(?P<Part>[a-d]{1})?(?P<EpisodeTitle>.+)', re.IGNORECASE),
-    #
+    
+    # TMNT - S05E21 - Planet Of The Turtleoids Part 1
+    re.compile(r'.*\d+[a-e]?(\s-\s)(?P<EpisodeTitle>.*)', re.IGNORECASE),
+    # Generic
     re.compile(r'.*\d+[a-e]?(?P<EpisodeTitle>.*)', re.IGNORECASE)
 ]
 
