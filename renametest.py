@@ -126,14 +126,32 @@ class Test_TestRename(unittest.TestCase):
         info.title = '15 minutes in parker'
         infos.append(info)
         result = rename.generate_derived_season_renames(infos)
-        
+
         self.assertListEqual(result, [EpisodeRename('producing-parker-season-2-episode-6-15-minutes-in-parker.mp4', 'Producing Parker - S02E06 - 15 minutes in parker.mp4')])
+    
+    def test_generate_season_map_file_renames(self):
+        rename.show_name = 'Producing Parker'
+        rename.season_maps = [1, 2]
+        infos = rename.generate_episode_infos(os.path.abspath('./test-data/producing-parker - standard derived seasons for season maps/'))
+        result = rename.generate_season_map_file_renames(infos)
+
+        correct_renames = []
+        correct_renames.append(EpisodeRename('producing-parker-season-1-episode-1-producing-parker.mp4', 'Producing Parker - S01E01 - producing parker.mp4'))
+        correct_renames.append(EpisodeRename('producing-parker-season-1-episode-2-producing-parker.mp4', 'Producing Parker - S02E01 - producing parker.mp4'))
+        correct_renames.append(EpisodeRename('producing-parker-season-1-episode-3-producing-parker.mp4', 'Producing Parker - S02E02 - producing parker.mp4'))
         
+        for r in result:
+            print(r)
+        self.assertListEqual(result, correct_renames)
     
     def test_info_has_parts(self):
         self.assertTrue(rename.info_has_parts(weekenders_part_infos))
         self.assertFalse(rename.info_has_parts([]))
         self.assertFalse(rename.info_has_parts([EpisodeInfo(root_dir, 'S01E02b - Sense and Sensitivity')]))
+    
+    def test_sum_until(self):
+        self.assertIs(rename.sum_until([1, 1, 1, 2], 1), 1)
+        self.assertIs(rename.sum_until([1, 1, 1, 2], 0), 0)
         
     
 if __name__ == '__main__':

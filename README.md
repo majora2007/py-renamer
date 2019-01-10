@@ -9,10 +9,8 @@ Download this from git and place somewhere on your computer. Put that location i
 This is the minimum required command to execute. You can get more commands from the rename.py file.
 
 # BUGS:
-Happy_Days_-_3-21_-_Fonzie_Moves_In_-_DVD2XviD -> Happy Days - S03E01 - Fonzie Moves In DVD2XviD
 
 
 # TODO:
-* Implement Subtitle renaming and enhance to suport multiple subtitles per file (or handle normally)
-* Enhance parser to support more formats
+* Implement Subtitle renaming and enhance to suport multiple subtitles per file (or handle normally) (test this)
 * Implement ability to pass in a set of episode counts that map abs numbers to seasons (ie: [2, 2, 3] => 2 eps in S01, 2 eps in S02, 3 eps in S03)

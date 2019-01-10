@@ -23,6 +23,7 @@ def init_args():
     parser.add_argument('--eps_per_file', required=False, nargs=1, help="Number of episodes per file")
     parser.add_argument('--dry', required=False, action='store_true', help="Perform a dry run. Does not perform a rename")
     parser.add_argument('--verbose', required=False, action='store_true', help="Detailed output")
+    parser.add_argument('--season_maps', required=False, nargs=1, help="A set of episodes per season. ie) [2,2,1] -> S1 has 2 ep, S2 has 2 eps, S3 has 1")
     return parser.parse_args()
 
 def find_subtitle(root_dir, filename):
@@ -74,6 +75,42 @@ def generate_derived_season_renames(infos):
         renames.append(EpisodeRename(info.original_filename, new_name))
     return renames
 
+def sum_until(arr, idx):
+    """ Sums an array up until the index is reached. If you pass [1, 1], 1. The sum will be 1. """
+    sum = 0
+    for i, val in enumerate(arr):
+        if i == idx:
+            break
+        sum += val
+    return sum
+
+def generate_season_map_file_renames(infos):
+    """ Uses a renamer suitable for handling abs numbered files and splitting them into seasoned based on their number. """
+    renames = []
+    for info in infos:
+        episode_num = int(info.episode.split('E')[1])
+        bucket_index = 0
+        sum = 0
+        # Find what bucket episode_num fits in. We use +1 because 
+        for idx, val in enumerate(season_maps):
+            sum += val
+            #print('Is {0} <= {1}'.format(episode_num, sum))
+            if episode_num <= sum:
+                #print('Episode {0} maps to bucket {1} ({2} episodes)'.format(episode_num, idx, val))
+                bucket_index = idx
+                sum_until_bucket = sum_until(season_maps, idx)
+                delta = abs(episode_num - sum_until_bucket)
+                #print('Sum Until: {0}'.format(sum_until_bucket))
+                #print('Delta: {0}'.format(delta))
+                #episode_num = episode_num - delta
+                episode_seg = 'E' + parse.format_num(delta)
+                season_seg = 'S' + parse.format_num(bucket_index + 1)
+                new_name = show_name + ' - ' + season_seg + episode_seg + ' - ' + info.title + '.' + info.extension
+                renames.append(EpisodeRename(info.original_filename, new_name))
+                break
+        
+    return renames
+
 def generate_renames(infos):
     """ Given a list of EpisodeInfo objects, generate EpisodeRename objects using a renaming strategy best based on flags and metadata. """
     renames = []
@@ -83,6 +120,9 @@ def generate_renames(infos):
     elif eps_per_file > 1:
         print('Using Multiple Episodes per File Renamer')
         renames = generate_multiple_part_per_file_renames(infos)
+    elif len(season_maps) > 0:
+        print('Using season maps renamer')
+        renames = generate_season_map_file_renames(infos)
     else:
         print('Using derived season renamer')
         renames = generate_derived_season_renames(infos)
@@ -121,6 +161,12 @@ def write_renames(root_dir, renames):
 global season_num
 season_num = None
 
+def parse_season_map(map_str):
+    """ Parses an array from a str [1,2,3] """
+    import ast
+    return ast.literal_eval(map_str)
+
+
 if __name__ == '__main__':
     # Required Args
     print_info('Parsing Arguments')
@@ -134,6 +180,8 @@ if __name__ == '__main__':
     dry_run = bool(args.dry)
     eps_per_file = int(get_argument(args.eps_per_file, 1))
     verbose = bool(args.verbose)
+    
+    season_maps = parse_season_map(get_argument(args.season_maps, '[]'))
     print('Verbose Mode: {0}'.format(verbose))
 
 
