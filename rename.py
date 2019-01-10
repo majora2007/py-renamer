@@ -121,10 +121,10 @@ def generate_renames(infos):
         print('Using Multiple Episodes per File Renamer')
         renames = generate_multiple_part_per_file_renames(infos)
     elif len(season_maps) > 0:
-        print('Using season maps renamer')
+        print('Using Season Maps Renamer')
         renames = generate_season_map_file_renames(infos)
     else:
-        print('Using derived season renamer')
+        print('Using Derived Season Renamer')
         renames = generate_derived_season_renames(infos)
     return renames
 
@@ -182,6 +182,8 @@ if __name__ == '__main__':
     verbose = bool(args.verbose)
     
     season_maps = parse_season_map(get_argument(args.season_maps, '[]'))
+    if len(season_maps) > 0:
+        print('Season Map: {0}'.format(season_maps))
     print('Verbose Mode: {0}'.format(verbose))
 
 
