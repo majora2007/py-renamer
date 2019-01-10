@@ -52,6 +52,7 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode_title('Show name - S01E01 - Title here'), 'Title here')
         self.assertEqual(parse.parse_episode_title('[hash]_show_1x01_-_title_goes_here'), 'title goes here')
         self.assertEqual(parse.parse_episode_title('TMNT - S05E21 - Planet Of The Turtleoids Part 1'), 'Planet Of The Turtleoids Part 1')
+        self.assertEqual(parse.parse_episode_title('martin-mystery-episode-65-its-alive-part-1'), 'its alive part 1')
 
     def test_is_media_file(self):
         self.assertEqual(parse.is_media_file('joe.mp4'), True)

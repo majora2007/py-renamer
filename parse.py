@@ -47,6 +47,8 @@ EPISODE_TITLE_REGEX = [
     
     # TMNT - S05E21 - Planet Of The Turtleoids Part 1
     re.compile(r'.*\d+[a-e]?(\s-\s)(?P<EpisodeTitle>.*)', re.IGNORECASE),
+    # martin-mystery-episode-65-its-alive-part-1
+    re.compile(r'.*\d+[a-e]?(-)(?P<EpisodeTitle>.*)', re.IGNORECASE),
     # Generic
     re.compile(r'.*\d+[a-e]?(?P<EpisodeTitle>.*)', re.IGNORECASE)
 ]

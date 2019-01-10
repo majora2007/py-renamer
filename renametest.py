@@ -116,6 +116,7 @@ class Test_TestRename(unittest.TestCase):
         self.assertListEqual(result, correct_renames)
 
     def test_generate_derived_season_renames_2(self):
+        rename.show_name = 'Producing Parker'
         infos = []
         info = EpisodeInfo(root_dir, 'producing-parker-season-2-episode-6-15-minutes-in-parker.mp4')
         info.episode = 'E06'
@@ -128,6 +129,22 @@ class Test_TestRename(unittest.TestCase):
         result = rename.generate_derived_season_renames(infos)
 
         self.assertListEqual(result, [EpisodeRename('producing-parker-season-2-episode-6-15-minutes-in-parker.mp4', 'Producing Parker - S02E06 - 15 minutes in parker.mp4')])
+    
+    def test_generate_derived_season_renames_3(self):
+        rename.show_name = 'Martin Mystery'
+        infos = []
+        # For this test, assume Episode 65, even though this was for a season_maps exercise
+        info = EpisodeInfo(root_dir, 'martin-mystery-episode-65-its-alive-part-1.mp4')
+        info.episode = 'E65'
+        info.extension = 'mp4'
+        info.part_num = 0
+        info.subtitle = None
+        info.season = 'S01'
+        info.title = 'its alive part 1'
+        infos.append(info)
+        result = rename.generate_derived_season_renames(infos)
+
+        self.assertListEqual(result, [EpisodeRename('martin-mystery-episode-65-its-alive-part-1.mp4', 'Martin Mystery - S01E65 - its alive part 1.mp4')])
     
     def test_generate_season_map_file_renames(self):
         rename.show_name = 'Producing Parker'
