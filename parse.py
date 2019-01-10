@@ -14,7 +14,7 @@ EPISODE_NUM_REGEXS = [
     # Happy Days 11-01
     re.compile(r'(?P<Show>.*?)(\d{1})-(?P<Episode>\d+)', re.IGNORECASE),
     # 1x01, Show - 1x01, 1x01a
-    re.compile(r'(?P<Show>.*?)(\d{1,3})x?(?P<Episode>\d+)', re.IGNORECASE),
+    re.compile(r'(?P<Show>.*?)(\d{1,3})x(?P<Episode>\d+)', re.IGNORECASE),
     # Ep1
     re.compile(r'(?P<Show>.*?)(Ep)?(?P<Episode>\d+)', re.IGNORECASE),
 ]

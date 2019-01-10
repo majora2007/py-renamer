@@ -96,7 +96,7 @@ def generate_season_map_file_renames(infos):
             sum += val
             #print('Is {0} <= {1}'.format(episode_num, sum))
             if episode_num <= sum:
-                #print('Episode {0} maps to bucket {1} ({2} episodes)'.format(episode_num, idx, val))
+                print('Episode {0} maps to bucket {1} ({2} episodes)'.format(episode_num, idx, val))
                 bucket_index = idx
                 sum_until_bucket = sum_until(season_maps, idx)
                 delta = abs(episode_num - sum_until_bucket)
