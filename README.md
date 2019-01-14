@@ -9,7 +9,7 @@ Download this from git and place somewhere on your computer. Put that location i
 This is the minimum required command to execute. You can get more commands from the rename.py file.
 
 # BUGS:
-Episode 21 - Mother And Child Reunion.avi -> Happy Days - S08E01 - Mother And Child Reunion.avi
+Happy Days 11-22 Fonzies Spots.avi -> Happy Days - S11E01 - Fonzies Spots.avi
 
 # TODO:
 * Implement Subtitle renaming and enhance to suport multiple subtitles per file (or handle normally) (test this)

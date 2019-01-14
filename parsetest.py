@@ -36,6 +36,8 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode('martin-mystery-episode-65-its-alive-part-1'), 'E65')
         self.assertEqual(parse.parse_episode('sabrinas-secret-life-2003-episode-1-at-the-hop'), 'E01')
         self.assertEqual(parse.parse_episode('Episode 21 - Mother And Child Reunion.avi'), 'E21')
+        self.assertEqual(parse.parse_episode('Happy Days 11-22 Fonzies Spots.avi'), 'E22')
+        
         
     
     def test_parse_episode_part(self):
