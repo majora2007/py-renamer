@@ -109,6 +109,10 @@ class Test_TestRename(unittest.TestCase):
         infos = rename.generate_episode_infos(os.path.abspath('./test-data/producing-parker - standard derived seasons/'))
         result = rename.generate_derived_season_renames(infos)
 
+        print('results')
+        for r in result:
+            print(r)
+
         correct_renames = []
         correct_renames.append(EpisodeRename('producing-parker-season-1-episode-1-producing-parker.mp4', 'Producing Parker - S01E01 - producing parker.mp4'))
         correct_renames.append(EpisodeRename('producing-parker-season-1-episode-2-producing-parker.mp4', 'Producing Parker - S01E02 - producing parker.mp4'))

@@ -11,6 +11,8 @@ EPISODE_NUM_REGEXS = [
     re.compile(r'(?P<Show>.*?)\s(\d{1})(?P<Episode>\d+)', re.IGNORECASE),
     # S01E01, E01, Episode 1, Show - S01E01, S01E01-E02
     re.compile(r'(?P<Show>.*?)(S{1}?\d+)(E|x)?(?P<Episode>\d+-?E?\d+)', re.IGNORECASE),
+    # sabrinas-secret-life-2003-episode-1-at-the-hop
+    re.compile(r'(?P<Show>.*)(\d{1,4})-(episode-)(?P<Episode>\d+).*', re.IGNORECASE),
     # Happy Days 11-01
     re.compile(r'(?P<Show>.*?)(\d{1})-(?P<Episode>\d+)', re.IGNORECASE),
     # 1x01, Show - 1x01, 1x01a
@@ -28,6 +30,8 @@ SEASON_REGEX = [
     re.compile(r'(?P<Show>.*?)(?P<Season>\d+)x\d+.*', re.IGNORECASE),
     # Happy Days 11-01 
     re.compile(r'(?P<Show>.*?)(?P<Season>\d+)-\d+.*', re.IGNORECASE),
+    # sabrinas-secret-life-2003-episode-1-at-the-hop
+    re.compile(r'(?P<Show>.*?)(?P<Season>\d{4}).*', re.IGNORECASE),
     # Martin Mystery 201
     re.compile(r'(?P<Show>.*?)(?P<Season>\d{1})(?P<Episode>\d+)', re.IGNORECASE)
 ]
@@ -40,11 +44,8 @@ EPISODE_PART_REGEXS = [
 ]
 
 EPISODE_TITLE_REGEX = [
-    # Supports episode titles where a part is present
-    #re.compile(r'(.*)?\d+(?P<Part>[a-d]{1})(?P<EpisodeTitle>.+)', re.IGNORECASE),
-    # For filenames without a part
-    #re.compile(r'(.*)?\d+(?P<Part>[a-d]{1})?(?P<EpisodeTitle>.+)', re.IGNORECASE),
-    
+    # Happy_Days_-_3-24_-_Arnold_s_Wedding_-_DVD2XviD
+    re.compile(r'(?P<Show>.*?)[^season-]\d{1,3}-[^season-](?P<Episode>\d+)(?P<EpisodeTitle>.*)', re.IGNORECASE),
     # TMNT - S05E21 - Planet Of The Turtleoids Part 1
     re.compile(r'.*\d+[a-e]?(\s-\s)(?P<EpisodeTitle>.*)', re.IGNORECASE),
     # martin-mystery-episode-65-its-alive-part-1
@@ -135,7 +136,8 @@ def parse_episode(filename):
 
 def clean_episode_title(filename):
     """ Removes special seperators like -,_  and leading spaces"""
-    return filename.replace('_', ' ').replace('-', ' ').lstrip()
+    new_str = filename.replace('_', ' ').replace('-', ' ')
+    return re.sub('\s+', ' ', new_str).strip()
 
 def is_special_season(season_str):
     """ Returns True if Season is formated as Special (ie S00) """

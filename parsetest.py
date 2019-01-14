@@ -14,6 +14,7 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_season('Braceface - 201 - The Social Fabric part 1.mkv'), 'S02')
         self.assertEqual(parse.parse_season('Martin Mystery 201'), 'S02')
         self.assertEqual(parse.parse_season('producing-parker-season-2-episode-11-3.0-parker.mp4'), 'S02')
+        self.assertEqual(parse.parse_season('sabrinas-secret-life-2003-episode-1-at-the-hop'), 'S2003')
         
     
     def test_parse_episode(self):
@@ -33,6 +34,7 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode('martin mystery 325 its alive part 1 [tv.dtv.mere].avi'), 'E25')
         self.assertEqual(parse.parse_episode('producing-parker-season-2-episode-11-3.0-parker.mp4'), 'E11')
         self.assertEqual(parse.parse_episode('martin-mystery-episode-65-its-alive-part-1'), 'E65')
+        self.assertEqual(parse.parse_episode('sabrinas-secret-life-2003-episode-1-at-the-hop'), 'E01')
         
     
     def test_parse_episode_part(self):
@@ -54,6 +56,10 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode_title('[hash]_show_1x01_-_title_goes_here'), 'title goes here')
         self.assertEqual(parse.parse_episode_title('TMNT - S05E21 - Planet Of The Turtleoids Part 1'), 'Planet Of The Turtleoids Part 1')
         self.assertEqual(parse.parse_episode_title('martin-mystery-episode-65-its-alive-part-1'), 'its alive part 1')
+        self.assertEqual(parse.parse_episode_title('Happy_Days_-_3-24_-_Arnold_s_Wedding_-_DVD2XviD'), 'Arnold s Wedding DVD2XviD')
+        self.assertEqual(parse.parse_episode_title('Happy Days 11-01 Because It\'s There'), 'Because It\'s There')
+        
+        
 
     def test_is_media_file(self):
         self.assertEqual(parse.is_media_file('joe.mp4'), True)
