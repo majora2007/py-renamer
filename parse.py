@@ -7,6 +7,8 @@ SUBTITLE_EXTENSIONS = ('.srt')
 EPISODE_NUM_REGEXS = [
     # show-season-1-episode-1
     re.compile(r'.*[-_]?season.{1}(?P<Season>\d+).{1}episode.{1}(?P<Episode>\d+)', re.IGNORECASE),
+    # Episode 21 (no season)
+    re.compile(r'(Episode\s)(?P<Episode>\d+)', re.IGNORECASE),
     # Martin Mystery 201
     re.compile(r'(?P<Show>.*?)\s(\d{1})(?P<Episode>\d+)', re.IGNORECASE),
     # S01E01, E01, Episode 1, Show - S01E01, S01E01-E02

@@ -9,8 +9,7 @@ Download this from git and place somewhere on your computer. Put that location i
 This is the minimum required command to execute. You can get more commands from the rename.py file.
 
 # BUGS:
-sabrinas-secret-life-2003-episode-1-at-the-hop -> Sabrina's Secret Life (2003) - S02E2003 - at the hop.mp4
-Happy Days 11-01 Because It's There.avi -> Happy Days - S11E01 - 01 Because It's There.avi
+Episode 21 - Mother And Child Reunion.avi -> Happy Days - S08E01 - Mother And Child Reunion.avi
 
 # TODO:
 * Implement Subtitle renaming and enhance to suport multiple subtitles per file (or handle normally) (test this)
