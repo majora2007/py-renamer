@@ -17,10 +17,10 @@ EPISODE_NUM_REGEXS = [
     re.compile(r'(?P<Show>.*?)(S{1}?\d+)(E|x)?(?P<Episode>\d+-?E?\d+)', re.IGNORECASE),
     # sabrinas-secret-life-2003-episode-1-at-the-hop
     re.compile(r'(?P<Show>.*)(\d{1,4})-(episode-)(?P<Episode>\d+).*', re.IGNORECASE),
-    # Happy Days 11-01
-    re.compile(r'(?P<Show>.*?)(\d{1})-(?P<Episode>\d+)', re.IGNORECASE),
     # 1x01, Show - 1x01, 1x01a
     re.compile(r'(?P<Show>.*?)(\d{1,3})x(?P<Episode>\d+)', re.IGNORECASE),
+    # Happy Days 11-01
+    re.compile(r'(?P<Show>.*?)(\d{1})-(?P<Episode>\d+)', re.IGNORECASE),
     # Ep1
     re.compile(r'(?P<Show>.*?)(Ep)?(?P<Episode>\d+)', re.IGNORECASE),
 ]
@@ -53,7 +53,7 @@ EPISODE_TITLE_REGEX = [
     # TMNT - S05E21 - Planet Of The Turtleoids Part 1
     re.compile(r'.*\d+[a-e]?(\s-\s)(?P<EpisodeTitle>.*)', re.IGNORECASE),
     # martin-mystery-episode-65-its-alive-part-1
-    re.compile(r'.*\d+[a-e]?(-)(?P<EpisodeTitle>.*)', re.IGNORECASE),
+    re.compile(r'.*(episode-\d+[a-e]?)(-)(?P<EpisodeTitle>.*)', re.IGNORECASE),
     # Generic
     re.compile(r'.*\d+[a-e]?(?P<EpisodeTitle>.*)', re.IGNORECASE)
 ]

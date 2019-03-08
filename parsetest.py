@@ -37,6 +37,8 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode('sabrinas-secret-life-2003-episode-1-at-the-hop'), 'E01')
         self.assertEqual(parse.parse_episode('Episode 21 - Mother And Child Reunion.avi'), 'E21')
         self.assertEqual(parse.parse_episode('Happy Days 11-22 Fonzies Spots.avi'), 'E22')
+        self.assertEqual(parse.parse_episode('YP-WOY-01x38-1R-The_Rider.mkv'), 'E38')
+        
         
         
     
@@ -61,6 +63,7 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode_title('martin-mystery-episode-65-its-alive-part-1'), 'its alive part 1')
         self.assertEqual(parse.parse_episode_title('Happy_Days_-_3-24_-_Arnold_s_Wedding_-_DVD2XviD'), 'Arnold s Wedding DVD2XviD')
         self.assertEqual(parse.parse_episode_title('Happy Days 11-01 Because It\'s There'), 'Because It\'s There')
+        self.assertEqual(parse.parse_episode_title('larva-season-2-episode-34-one-wild-rough-tough-world-2-3'), 'one wild rough tough world 2 3')
         
         
 
