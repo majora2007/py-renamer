@@ -10,6 +10,7 @@ This is the minimum required command to execute. You can get more commands from 
 
 # BUGS:
 Teen.Titans.Go.S03E27a.The.Cape.720p.WEB-DL.AAC2.0.H.264-YFN.dub.mkv -> Teen Titans Go - S03E53 - YFN.dub.mkv
+YP-WOY-01x34_01x35-1R-The_Big_Job-The_Helper.mkv -> Wander Over Yonder - S01E34 - R The Big Job The Helper.mkv
 
 # TODO:
 * Implement Subtitle renaming and enhance to suport multiple subtitles per file (or handle normally) (test this)

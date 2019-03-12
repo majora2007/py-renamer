@@ -155,7 +155,10 @@ def write_renames(root_dir, renames):
     """ Responsible for renaming original files with standarized names """
     print('Updating files at {0}'.format(root_dir))
     for rename in renames:
-        os.rename(os.path.join(root_dir, rename.original_filename), os.path.join(root_dir, rename.new_filename))
+        if os.path.join(root_dir, rename.original_filename) == os.path.join(root_dir, rename.new_filename):
+            print('Skipping due to no rename needed, {0}'.format(rename.new_filename))
+        else:
+            os.rename(os.path.join(root_dir, rename.original_filename), os.path.join(root_dir, rename.new_filename))
 
 # Todo: figure out how to remove this global
 global season_num
