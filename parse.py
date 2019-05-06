@@ -1,8 +1,8 @@
 import re
 from util import print_info
 
-MEDIA_EXTENSIONS = ('.avi', '.mpeg', '.mp4', 'mkv', '.mpg', '.m4v')
-SUBTITLE_EXTENSIONS = ('.srt')
+MEDIA_EXTENSIONS = ('.avi', '.mpeg', '.mp4', 'mkv', '.mpg', '.m4v', '.mpeg')
+SUBTITLE_EXTENSIONS = ('.srt', '.ass')
 
 EPISODE_NUM_REGEXS = [
     # show-season-1-episode-1
@@ -21,6 +21,8 @@ EPISODE_NUM_REGEXS = [
     re.compile(r'(?P<Show>.*?)(\d{1,3})x(?P<Episode>\d+)', re.IGNORECASE),
     # Happy Days 11-01
     re.compile(r'(?P<Show>.*?)(\d{1})-(?P<Episode>\d+)', re.IGNORECASE),
+    # s1ep2
+    re.compile(r'(?P<Show>.*?)(Ep)(?P<Episode>\d+)', re.IGNORECASE),
     # Ep1
     re.compile(r'(?P<Show>.*?)(Ep)?(?P<Episode>\d+)', re.IGNORECASE),
 ]
