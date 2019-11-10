@@ -32,6 +32,8 @@ SEASON_REGEX = [
     re.compile(r'.*[-_]?season.{1}(?P<Season>\d+)', re.IGNORECASE),
     # S01E01
     re.compile(r'(?P<Show>.*?)S(?P<Season>\d+)E?\d+.*', re.IGNORECASE),
+    # S01EP01
+    re.compile(r'(?P<Show>.*?)S(?P<Season>\d+)(EP)?\d+.*', re.IGNORECASE),
     # 1x02
     re.compile(r'(?P<Show>.*?)(?P<Season>\d+)x\d+.*', re.IGNORECASE),
     # Happy Days 11-01 

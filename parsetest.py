@@ -16,6 +16,8 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_season('producing-parker-season-2-episode-11-3.0-parker.mp4'), 'S02')
         self.assertEqual(parse.parse_season('sabrinas-secret-life-2003-episode-1-at-the-hop'), 'S2003')
         self.assertEqual(parse.parse_season('s1ep01 the girls want to go to a nightclub.avi'), 'S01')
+        self.assertEqual(parse.parse_season('s1ep35 ricky asks for a raise.avi'), 'S01')
+        
         
     
     def test_parse_episode(self):
@@ -40,6 +42,10 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode('Happy Days 11-22 Fonzies Spots.avi'), 'E22')
         self.assertEqual(parse.parse_episode('YP-WOY-01x38-1R-The_Rider.mkv'), 'E38')
         self.assertEqual(parse.parse_episode('s1ep02 be a pal.avi'), 'E02')
+        self.assertEqual(parse.parse_episode('ChalkZone.106.The.Wiggies~Rapunzel~Hair.to.Stay~Coming.to.Life.XviD.ENGiNE.avi'), 'E06')
+
+        
+        
         
         
         
