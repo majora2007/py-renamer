@@ -13,9 +13,6 @@ Teen.Titans.Go.S03E27a.The.Cape.720p.WEB-DL.AAC2.0.H.264-YFN.dub.mkv -> Teen Tit
 
 YP-WOY-01x34_01x35-1R-The_Big_Job-The_Helper.mkv -> Wander Over Yonder - S01E34 - R The Big Job The Helper.mkv
 
-s1ep35 ricky asks for a raise.avi -> I Love Lucy - S03E35 - ricky asks for a raise.avi (season)
-
-ChalkZone.106.The.Wiggies~Rapunzel~Hair.to.Stay~Coming.to.Life.XviD.ENGiNE.avi -> ChalkZone - S01E106 - .The.Wiggies~Rapunzel~Hair.to.Stay~Coming.to.Life.XviD.ENGiNE.avi
 
 # TODO:
 * Implement Subtitle renaming and enhance to suport multiple subtitles per file (or handle normally) (test this)

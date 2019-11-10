@@ -42,7 +42,6 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode('Happy Days 11-22 Fonzies Spots.avi'), 'E22')
         self.assertEqual(parse.parse_episode('YP-WOY-01x38-1R-The_Rider.mkv'), 'E38')
         self.assertEqual(parse.parse_episode('s1ep02 be a pal.avi'), 'E02')
-        self.assertEqual(parse.parse_episode('ChalkZone.106.The.Wiggies~Rapunzel~Hair.to.Stay~Coming.to.Life.XviD.ENGiNE.avi'), 'E06')
 
         
         
