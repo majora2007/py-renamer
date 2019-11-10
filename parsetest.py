@@ -73,6 +73,8 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode_title('Happy Days 11-01 Because It\'s There'), 'Because It\'s There')
         self.assertEqual(parse.parse_episode_title('larva-season-2-episode-34-one-wild-rough-tough-world-2-3'), 'one wild rough tough world 2 3')
         self.assertEqual(parse.parse_episode_title('s1ep02 be a pal'), 'be a pal')
+        self.assertEqual(parse.parse_episode_title('BBC.Natures.Microworlds.01of13.Galapagos.720p.HDTV.x264.AAC.MVGroup.org'), '.Galapagos.720p.HDTV.x264.AAC.MVGroup.org')
+        
         
         
         

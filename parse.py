@@ -58,6 +58,8 @@ EPISODE_TITLE_REGEX = [
     re.compile(r'.*\d+[a-e]?(\s-\s)(?P<EpisodeTitle>.*)', re.IGNORECASE),
     # martin-mystery-episode-65-its-alive-part-1
     re.compile(r'.*(episode-\d+[a-e]?)(-)(?P<EpisodeTitle>.*)', re.IGNORECASE),
+    # BBC.Natures.Microworlds.01of13.Galapagos.720p.HDTV.x264.AAC.MVGroup.org
+    re.compile(r'\d+((of)[a-e]?)(\d+)?(?P<EpisodeTitle>.*)', re.IGNORECASE),
     # Generic
     re.compile(r'.*\d+[a-e]?(?P<EpisodeTitle>.*)', re.IGNORECASE)
 ]
