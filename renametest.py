@@ -74,6 +74,16 @@ info.title = 'producing parker'
 producing_parkers.append(info)
 
 class Test_TestRename(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(self):
+        '''Unpack tests/ directory. Any -tests.txt files should be expanded into fake .mp4 files'''
+        pass
+    
+    @classmethod
+    def tearDownClass(self):
+        ''' Delete everything inside the tests/ directory'''
+        pass
     
     def test_generate_episode_infos(self):
         result = rename.generate_episode_infos(root_dir)
