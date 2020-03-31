@@ -9,8 +9,8 @@ class EpisodeInfo(object):
     title = '' # Rest of the filename outside of show, season, episode
 
     def __init__(self, root_dir, filename):
-		self.root_dir = root_dir
-		self.original_filename = filename
+        self.root_dir = root_dir
+        self.original_filename = filename
     
     def __eq__(self, other):
         return self.episode == other.episode and self.season == other.season and self.part_num == other.part_num and self.root_dir == other.root_dir and self.original_filename == other.original_filename and self.extension == other.extension and self.subtitle == other.subtitle and self.title == other.title

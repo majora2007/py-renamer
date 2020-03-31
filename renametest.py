@@ -73,12 +73,20 @@ info.season = 'S02'
 info.title = 'producing parker'
 producing_parkers.append(info)
 
+
+
+    
+
+
 class Test_TestRename(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
         '''Unpack tests/ directory. Any -tests.txt files should be expanded into fake .mp4 files'''
-        pass
+        for root, dirs, files in os.walk(os.path.abspath('./tests/cases/')):
+            for file in files:
+                if file.endswith('-testcase.txt'):
+                    generate_data(file)
     
     @classmethod
     def tearDownClass(self):
@@ -118,10 +126,6 @@ class Test_TestRename(unittest.TestCase):
         rename.show_name = 'Producing Parker'
         infos = rename.generate_episode_infos(os.path.abspath('./test-data/producing-parker - standard derived seasons/'))
         result = rename.generate_derived_season_renames(infos)
-
-        print('results')
-        for r in result:
-            print(r)
 
         correct_renames = []
         correct_renames.append(EpisodeRename('producing-parker-season-1-episode-1-producing-parker.mp4', 'Producing Parker - S01E01 - producing parker.mp4'))
@@ -171,8 +175,6 @@ class Test_TestRename(unittest.TestCase):
         correct_renames.append(EpisodeRename('producing-parker-season-1-episode-2-producing-parker.mp4', 'Producing Parker - S02E01 - producing parker.mp4'))
         correct_renames.append(EpisodeRename('producing-parker-season-1-episode-3-producing-parker.mp4', 'Producing Parker - S02E02 - producing parker.mp4'))
         
-        for r in result:
-            print(r)
         self.assertListEqual(result, correct_renames)
     
     def test_info_has_parts(self):
