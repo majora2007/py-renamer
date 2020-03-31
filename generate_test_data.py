@@ -28,7 +28,7 @@ def generate_data(file, root_dir):
         files_to_create = in_file.readlines() """
     
     for part in os.path.split('Mythbusters\Season 01\Mythbusters s01e02 - Airplane Toilet, Biscuit Bazooka, Leaping lawyer.avi'):
-        p = pathlib.Path(part)
+        p = Path(part)
         if not p.exists():
             print('make {0}'.format(part))
 
