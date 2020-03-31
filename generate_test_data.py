@@ -1,7 +1,7 @@
 ''' This script should be run on a directory which will generate a test case file 
     that can be loaded into the renametest.py'''
 import os
-from pathlib import Path
+#from pathlib import Path
 
 
 def create_test_base(file, root_dir):
@@ -42,7 +42,7 @@ def generate_test_file():
     for root, _, files in os.walk(root_dir):
         for file in files:
             if not file.endswith('-testcase.txt'):
-                filename = os.path.join(root.replace(os.path.split(root_dir)[0] + '\\', ''), file)
+                filename = os.path.join(root.replace(root_dir + '\\', ''), file)
                 out_files.append(filename)
             else:
                 print('root: {0}'.format(root))
@@ -54,6 +54,6 @@ def generate_test_file():
             f.write(filename + '\n')
 
 if __name__ == '__main__':
-    #generate_test_file()
-    filepath = os.path.join(os.path.abspath('./tests/cases/'), 'Mythbusters-testcase.txt')
-    generate_data(filepath, os.path.abspath('./tests/cases/'))
+    generate_test_file()
+    #filepath = os.path.join(os.path.abspath('./tests/cases/'), 'Mythbusters-testcase.txt')
+    #generate_data(filepath, os.path.abspath('./tests/cases/'))
