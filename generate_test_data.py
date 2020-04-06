@@ -1,7 +1,8 @@
 ''' This script should be run on a directory which will generate a test case file 
     that can be loaded into the renametest.py'''
 import os
-#from pathlib import Path
+from pathlib import Path
+import parse as parser
 
 
 def create_test_base(file, root_dir):
@@ -9,6 +10,7 @@ def create_test_base(file, root_dir):
     base_dir = os.path.split(file.split('-testcase.txt')[0])[-1]
     print('base_dir: {0}'.format(base_dir))
     new_dir = os.path.join(root_dir, base_dir)
+    print('new dir: {0}'.format(new_dir))
     p = Path(new_dir)
     if not p.exists():
         os.mkdir(new_dir)
@@ -20,20 +22,36 @@ def create_test_base(file, root_dir):
 def generate_data(file, root_dir):
     ''' Generates directories and fake files for testing against '''
 
+    base_dir = ''
     if file.endswith('-testcase.txt'):    
         base_dir = create_test_base(file, root_dir)
     
-    """ files_to_create = []
+    files_to_create = []
     with open(file, 'r') as in_file:
-        files_to_create = in_file.readlines() """
-    
-    for part in os.path.split('Mythbusters\Season 01\Mythbusters s01e02 - Airplane Toilet, Biscuit Bazooka, Leaping lawyer.avi'):
-        p = Path(part)
-        if not p.exists():
-            print('make {0}'.format(part))
+        files_to_create = in_file.read().splitlines() 
 
-    """ for f in files_to_create:
-        path_parts = os.path.split(f) """
+    for filepath in files_to_create:
+        for part in os.path.split(filepath): # 'Season 01\Mythbusters s01e02 - Airplane Toilet, Biscuit Bazooka, Leaping lawyer.avi'
+            part_path = os.path.join(base_dir, part)
+            print('Checking if {0} exists '.format(part_path))
+            p = Path(part_path)
+
+            if not p.exists():
+                print('Creating: {0}'.format(part))
+
+                if p.suffix != '': # parser.is_media_file(part)
+                    with open(os.path.join(root_dir, base_dir + '/' + filepath), 'w+') as f:
+                        f.write('')
+                else:
+                    os.mkdir(part_path)
+
+def clean_up_generated_data(root_dir):
+    for root, _, files in os.walk(root_dir):
+        for file in files:
+            if not file.endswith('-testcase.txt'):
+                print('remove {0}'.format(os.path.join(root.replace(root_dir + '\\', ''), file)))
+                #os.remove(os.path.join(root.replace(root_dir + '\\', ''), file))
+
 
 def generate_test_file():
     root_dir = os.path.abspath('.')
@@ -54,6 +72,8 @@ def generate_test_file():
             f.write(filename + '\n')
 
 if __name__ == '__main__':
-    generate_test_file()
-    #filepath = os.path.join(os.path.abspath('./tests/cases/'), 'Mythbusters-testcase.txt')
-    #generate_data(filepath, os.path.abspath('./tests/cases/'))
+    #generate_test_file()
+    filepath = os.path.join(os.path.abspath('./tests/cases/'), 'Mythbusters-testcase.txt')
+    generate_data(filepath, os.path.abspath('./tests/cases/'))
+
+    clean_up_generated_data(os.path.abspath('./tests/cases/'))
