@@ -3,8 +3,9 @@ import rename
 import os
 from episodeobj import EpisodeInfo
 from episoderename import EpisodeRename
+import generate_test_data as TestDataGenerator
 
-root_dir = os.path.abspath('./test-data/The Weekenders - Parts/')
+root_dir = os.path.abspath('./tests/cases/The Weekenders - Parts/')
 weekenders_part_infos = []
 info = EpisodeInfo(root_dir, 'S01E01a - Crush Test Dummies.mp4')
 info.episode = 'E01'
@@ -47,6 +48,7 @@ info.season = 'S01'
 info.title = 'Shoes'
 weekenders_part_infos.append(info)
 
+# TODO: Validate the rootpath here
 producing_parkers = []
 info = EpisodeInfo(root_dir, 'producing-parker-season-1-episode-1-producing-parker')
 info.episode = 'E01'
@@ -80,20 +82,24 @@ producing_parkers.append(info)
 
 class Test_TestRename(unittest.TestCase):
 
+    maxDiff = None
+
     @classmethod
     def setUpClass(self):
         '''Unpack tests/ directory. Any -tests.txt files should be expanded into fake .mp4 files'''
-        for root, dirs, files in os.walk(os.path.abspath('./tests/cases/')):
+        for _, _, files in os.walk(os.path.abspath('./tests/cases/')):
             for file in files:
                 if file.endswith('-testcase.txt'):
-                    generate_data(file)
+                    filepath = os.path.join(os.path.abspath('./tests/cases/'), file)
+                    TestDataGenerator.generate_data(filepath, os.path.abspath('./tests/cases/'))
     
     @classmethod
     def tearDownClass(self):
-        ''' Delete everything inside the tests/ directory'''
-        pass
+        ''' Delete everything inside the tests/cases/ directory'''
+        TestDataGenerator.clean_up_generated_data(os.path.abspath('./tests/cases/'))
     
     def test_generate_episode_infos(self):
+        root_dir = os.path.abspath('./tests/cases/The Weekenders - Parts/')
         result = rename.generate_episode_infos(root_dir)
         self.assertListEqual(result, weekenders_part_infos)
     
@@ -112,7 +118,7 @@ class Test_TestRename(unittest.TestCase):
     def test_generate_multiple_part_per_file_renames(self):
         rename.show_name = 'Producing Parker'
         rename.eps_per_file = 2
-        infos = rename.generate_episode_infos(os.path.abspath('./test-data/producing-parker - standard derived seasons/'))
+        infos = rename.generate_episode_infos(os.path.abspath('./tests/cases/Producing Parker/'))
         result = rename.generate_multiple_part_per_file_renames(infos)
 
         correct_renames = []
@@ -124,7 +130,7 @@ class Test_TestRename(unittest.TestCase):
     
     def test_generate_derived_season_renames(self):
         rename.show_name = 'Producing Parker'
-        infos = rename.generate_episode_infos(os.path.abspath('./test-data/producing-parker - standard derived seasons/'))
+        infos = rename.generate_episode_infos(os.path.abspath('./tests/cases/Producing Parker/'))
         result = rename.generate_derived_season_renames(infos)
 
         correct_renames = []
@@ -167,7 +173,7 @@ class Test_TestRename(unittest.TestCase):
     def test_generate_season_map_file_renames(self):
         rename.show_name = 'Producing Parker'
         rename.season_maps = [1, 2]
-        infos = rename.generate_episode_infos(os.path.abspath('./test-data/producing-parker - standard derived seasons for season maps/'))
+        infos = rename.generate_episode_infos(os.path.abspath('./tests/cases/Producing Parker - season maps/'))
         result = rename.generate_season_map_file_renames(infos)
 
         correct_renames = []
