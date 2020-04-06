@@ -18,3 +18,5 @@ YP-WOY-01x34_01x35-1R-The_Big_Job-The_Helper.mkv -> Wander Over Yonder - S01E34 
 * Implement Subtitle renaming and enhance to suport multiple subtitles per file (or handle normally) (test this)
 * Implement seasons that are years. Ie S2003E01
 * Implement season maps in conjunction with eps_per_file
+* Implement Anime support (ensure hashes are copied over, consistent series name mapping, abs number support, etc)
+* Interactive mode? Let user do substring replacement?

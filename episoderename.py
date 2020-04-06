@@ -7,7 +7,10 @@ class EpisodeRename(object):
         self.new_filename = new_filename
     
     def __str__(self):
-        return '{0} -> {1}'.format(self.original_filename, self.new_filename)
+        return 'EpisodeRename: {0} -> {1}'.format(self.original_filename, self.new_filename)
+    
+    def __repr__(self):
+        return 'EpisodeRename: {0} -> {1}'.format(self.original_filename, self.new_filename)
 
     def __eq__(self, other):
         return self.new_filename == other.new_filename
