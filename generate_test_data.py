@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 import parse as parser
+import shutil
 
 
 def create_test_base(file, root_dir):
@@ -46,11 +47,13 @@ def generate_data(file, root_dir):
                     os.mkdir(part_path)
 
 def clean_up_generated_data(root_dir):
-    for root, _, files in os.walk(root_dir):
+    for root, dirs, files in os.walk(root_dir):
+        for dir in dirs:
+            shutil.rmtree(os.path.join(root, dir))
         for file in files:
             if not file.endswith('-testcase.txt'):
-                print('remove {0}'.format(os.path.join(root.replace(root_dir + '\\', ''), file)))
-                #os.remove(os.path.join(root.replace(root_dir + '\\', ''), file))
+                print('Removing {0}'.format(os.path.join(root, file)))
+                os.remove(os.path.join(root, file))
 
 
 def generate_test_file():
@@ -62,10 +65,6 @@ def generate_test_file():
             if not file.endswith('-testcase.txt'):
                 filename = os.path.join(root.replace(root_dir + '\\', ''), file)
                 out_files.append(filename)
-            else:
-                print('root: {0}'.format(root))
-                print('file: {0}'.format(file))
-                print('root_dir: {0}'.format(root_dir))
 
     with open(os.path.join(root_dir, current_folder + '-testcase.txt'), 'w+') as f:
         for filename in out_files:
