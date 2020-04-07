@@ -24,6 +24,7 @@ def init_args():
     parser.add_argument('--dry', required=False, action='store_true', help="Perform a dry run. Does not perform a rename")
     parser.add_argument('--verbose', required=False, action='store_true', help="Detailed output")
     parser.add_argument('--season_maps', required=False, nargs=1, help="A set of episodes per season. ie) [2,2,1] -> S1 has 2 ep, S2 has 2 eps, S3 has 1")
+    parser.add_argument('--anime', required=False, action='store_true', help='Use anime logic for reanming files. Keeps hashes and scene groups on rename.')
     return parser.parse_args()
 
 def find_subtitle(root_dir, filename):
@@ -105,6 +106,7 @@ def generate_season_map_file_renames(infos):
                 #episode_num = episode_num - delta
                 episode_seg = 'E' + parse.format_num(delta)
                 season_seg = 'S' + parse.format_num(bucket_index + 1)
+                # TODO: Place anime new_name code here
                 new_name = show_name + ' - ' + season_seg + episode_seg + ' - ' + info.title + '.' + info.extension
                 renames.append(EpisodeRename(info.original_filename, new_name))
                 break
@@ -139,15 +141,24 @@ def generate_episode_infos(root_dir):
                 filename = parts[0]
                 info = EpisodeInfo(root_dir, filename)
                 info.original_filename = file
-                info.episode = parse.parse_episode(filename)
-                info.part_num = parse.parse_episode_part(filename)
-                info.subtitle = find_subtitle(root_dir, filename)
-                info.extension = parts[1].replace('.', '')
-                info.title = parse.parse_episode_title(filename)
-                if season_num is None:
-                    info.season = parse.parse_season(filename)
+                if anime_mode:
+                    info.episode = parse.parse_anime_episode(filename)
+                    info.subtitle = find_subtitle(root_dir, filename) # TODO: See if this works fine for anime
+                    info.extension = parts[1].replace('.', '')
+                    if season_num is None:
+                        info.season = 'S01' # TODO: Figure out how to handle this. Assume Season 01 always? 
+                    else:
+                        info.season = 'S' + parse.format_num(int(season_num))
                 else:
-                    info.season = 'S' + parse.format_num(int(season_num))
+                    info.episode = parse.parse_episode(filename)
+                    info.part_num = parse.parse_episode_part(filename)
+                    info.subtitle = find_subtitle(root_dir, filename)
+                    info.extension = parts[1].replace('.', '')
+                    info.title = parse.parse_episode_title(filename)
+                    if season_num is None:
+                        info.season = parse.parse_season(filename)
+                    else:
+                        info.season = 'S' + parse.format_num(int(season_num))
                 file_infos.append(info)
     return file_infos
 
@@ -183,11 +194,13 @@ if __name__ == '__main__':
     dry_run = bool(args.dry)
     eps_per_file = int(get_argument(args.eps_per_file, 1))
     verbose = bool(args.verbose)
+    anime_mode = bool(args.anime)
     
     season_maps = parse_season_map(get_argument(args.season_maps, '[]'))
     if len(season_maps) > 0:
         print('Season Map: {0}'.format(season_maps))
     print('Verbose Mode: {0}'.format(verbose))
+    print('Anime Mode: {0}'.format(anime_mode))
 
 
     root_dir = os.getcwd()

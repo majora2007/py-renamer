@@ -97,6 +97,8 @@ class Test_TestRename(unittest.TestCase):
     def tearDownClass(self):
         ''' Delete everything inside the tests/cases/ directory'''
         TestDataGenerator.clean_up_generated_data(os.path.abspath('./tests/cases/'))
+
+    
     
     def test_generate_episode_infos(self):
         root_dir = os.path.abspath('./tests/cases/The Weekenders - Parts/')
@@ -180,6 +182,19 @@ class Test_TestRename(unittest.TestCase):
         correct_renames.append(EpisodeRename('producing-parker-season-1-episode-1-producing-parker.mp4', 'Producing Parker - S01E01 - producing parker.mp4'))
         correct_renames.append(EpisodeRename('producing-parker-season-1-episode-2-producing-parker.mp4', 'Producing Parker - S02E01 - producing parker.mp4'))
         correct_renames.append(EpisodeRename('producing-parker-season-1-episode-3-producing-parker.mp4', 'Producing Parker - S02E02 - producing parker.mp4'))
+        
+        self.assertListEqual(result, correct_renames)
+
+    def test_generate_season_map_file_renames_for_anime_1(self):
+        rename.show_name = 'Gurren Lagann'
+        rename.season_maps = [1, 2]
+        infos = rename.generate_episode_infos(os.path.abspath('./tests/cases/Anime Season Maps/'))
+        result = rename.generate_season_map_file_renames(infos)
+
+        correct_renames = []
+        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_01_-_Bust_Through_the_Heavens_With_Your_Drill!_[720p]_[D2E69407].mkv', '[CBM] Gurren Lagann - S01E01 - Bust Through the Heavens With Your Drill! [720p] [D2E69407].mp4'))
+        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_02_-_I_Said_I\'m_Gonna_Pilot_That_Thing!!_[720p]_[19E9CF6F].mkv', 'Producing Parker - S02E01 - producing parker.mp4'))
+        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_03_-_Who_Do_You_Think_You_Are,_Having_Two_Faces!_[720p]_[659E4875].mkv', 'Producing Parker - S02E02 - producing parker.mp4'))
         
         self.assertListEqual(result, correct_renames)
     

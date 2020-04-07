@@ -64,6 +64,30 @@ EPISODE_TITLE_REGEX = [
     re.compile(r'.*\d+[a-e]?(?P<EpisodeTitle>.*)', re.IGNORECASE)
 ]
 
+ANIME_HASH_REGEXS = [
+    re.compile(r'(?P<Hash>\[.{8}\])', re.IGNORECASE)
+]
+
+ANIME_GROUP_REGEXS = [
+    re.compile(r'\[(?P<Group>[A-Z]+)\]', re.IGNORECASE)
+]
+
+ANIME_EPISODE_NUM_REGEXS = [
+    re.compile(r'_(?P<Episode>\d+)(v\d)?_', re.IGNORECASE) # _(?P<EpisodeTitle>\d*[\w_(\-\b)?!]*)-?_\d
+]
+
+ANIME_EPISODE_TITLE_REGEXS = [
+    # [CBM]_Gurren_Lagann_-_01_-_Bust_Through_the_Heavens_With_Your_Drill!_[720p]_[D2E69407].mkv
+    re.compile(r'(?:_-_)(?P<EpisodeTitle>[a-z_!]*)_', re.IGNORECASE)
+]
+
+# NOTE: This may need to be a class and multiple types of parsing to extract. 
+MEDIA_INFO_REGEXS = [
+
+]
+
+
+
 
 
 def parse_season(filename):
@@ -142,6 +166,83 @@ def parse_episode(filename):
                 print_info('Episode might be: {0}'.format(ep_num))
                 return 'E' + format_num(ep_num)
 
+    return None
+
+def parse_anime_hash(filename):
+    """ Given a filename, match hash and return hash with brackets. Returns None if no matches."""
+    print_info('Extracting hash from {0}'.format(filename))
+    for regex in ANIME_HASH_REGEXS:
+        m = re.search(regex, filename)
+
+        if m is None:
+            continue
+
+        ep_hash = m.group('Hash').upper()
+        print_info('Extracted Hash: {0}'.format(ep_hash))
+        return ep_hash
+    
+    return None
+
+def parse_anime_group(filename):
+    """ Given a filename, match anime sub group and return group without brackets. Returns None if no matches."""
+    print_info('Extracting hash from {0}'.format(filename))
+    for regex in ANIME_GROUP_REGEXS:
+        m = re.search(regex, filename)
+
+        if m is None:
+            continue
+
+        ep_group = m.group('Group')
+        print_info('Extracted Group: {0}'.format(ep_group))
+        return ep_group
+    
+    return None
+
+def parse_anime_episode(filename):
+    """ Given a filename, matches episode and returns episode in E01 format. This will ignore episode parts. Returns None if no matches."""
+    print_info('Extracting episode from {0}'.format(filename))
+    for regex in ANIME_EPISODE_NUM_REGEXS:
+        m = re.search(regex, filename)
+
+        if m is None:
+            continue
+
+        extracted_ep = m.group('Episode')
+        print_info('Extracted episode: {0}'.format(extracted_ep))
+
+        ep_num = int(extracted_ep)
+        if ep_num is not None and ep_num > 0:
+            print_info('Episode might be: {0}'.format(ep_num))
+            return 'E' + format_num(ep_num)
+
+    return None
+
+def parse_anime_episode_title(filename):
+    """ Attempts to parse episode title from filename. Will strip out separators at start of string. If no title is found, returns empty string"""
+    print_info('Attempting to parse episode title from {0}'.format(filename))
+    for regex in ANIME_EPISODE_TITLE_REGEXS:
+        m = re.search(regex, filename)
+
+        if m is None:
+            continue
+
+        extracted_title = m.group('EpisodeTitle')
+        return clean_episode_title(extracted_title)
+    return ''
+
+def parse_media_info(filename):
+    """ Given a filename, match media info and return media info with brackets. Returns None if no matches."""
+    print_info('Extracting hash from {0}'.format(filename))
+    for regex in MEDIA_INFO_REGEXS:
+        m = re.search(regex, filename)
+
+        if m is None:
+            continue
+
+        media_info = m.group('MediaInfo').upper()
+        print_info('Extracted Media Info: {0}'.format(media_info))
+        return media_info
+    
     return None
 
 def clean_episode_title(filename):

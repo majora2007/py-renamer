@@ -44,10 +44,22 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode('s1ep02 be a pal.avi'), 'E02')
 
         
+    def test_parse_anime_hash(self):
+        self.assertEqual(parse.parse_anime_hash('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), '[E1AC4C4A]')    
+        self.assertEqual(parse.parse_anime_hash('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), '[F9915E0F]')
         
-        
-        
-        
+    def test_parse_anime_group(self):
+        self.assertEqual(parse.parse_anime_group('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), 'Coalgirls')    
+        self.assertEqual(parse.parse_anime_group('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), 'Doki')
+    
+    def test_parse_anime_episode(self):
+        self.assertEqual(parse.parse_anime_episode('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), 'E01')    
+        self.assertEqual(parse.parse_anime_episode('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), 'E01')
+
+    def test_parse_anime_episode_title(self):
+        self.assertEqual(parse.parse_anime_episode_title('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), '')    
+        self.assertEqual(parse.parse_anime_episode_title('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), '')
+        self.assertEqual(parse.parse_anime_episode_title('[CBM]_Gurren_Lagann_-_01_-_Bust_Through_the_Heavens_With_Your_Drill!_[720p]_[D2E69407].mkv'), 'Bust Through the Heavens With Your Drill!')
     
     def test_parse_episode_part(self):
         self.assertEqual(parse.parse_episode_part('S01E02'), 0)
