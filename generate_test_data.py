@@ -38,7 +38,7 @@ def generate_data(file, root_dir):
         files_to_create = in_file.read().splitlines() 
 
     for filepath in files_to_create:
-        for part in os.path.split(filepath): # 'Season 01\Mythbusters s01e02 - Airplane Toilet, Biscuit Bazooka, Leaping lawyer.avi'
+        for part in os.path.split(filepath):
             part_path = os.path.join(base_dir, part)
             print_log('Checking if {0} exists '.format(part_path))
             p = Path(part_path)
@@ -46,7 +46,7 @@ def generate_data(file, root_dir):
             if not p.exists():
                 print_log('Creating: {0}'.format(part))
 
-                if p.suffix != '': # parser.is_media_file(part)
+                if p.suffix != '':
                     with open(os.path.join(root_dir, base_dir + '/' + filepath), 'w+') as f:
                         f.write('')
                 else:
@@ -69,7 +69,7 @@ def generate_test_file():
     for root, _, files in os.walk(root_dir):
         for file in files:
             if not file.endswith('-testcase.txt'):
-                filename = os.path.join(root.replace(root_dir + '\\', ''), file)
+                filename = os.path.join(root.replace(root_dir, ''), file) # root_dir or root_dir + '//'? 
                 out_files.append(filename)
 
     with open(os.path.join(root_dir, current_folder + '-testcase.txt'), 'w+') as f:
