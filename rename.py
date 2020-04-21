@@ -1,11 +1,14 @@
 import argparse
-#import commands # Note: Not sure why I have this here....
 from episodeobj import EpisodeInfo
 from episoderename import EpisodeRename
 import os
 import parse
+import re
+
 
 from util import verbose, print_info
+
+anime_mode = False
 
 def get_argument(argument, default="None"):
 	if argument:
@@ -72,7 +75,10 @@ def generate_derived_season_renames(infos):
     renames = []
     
     for info in infos:
-        new_name = show_name + ' - ' + info.season + info.episode + ' - ' + info.title + '.' + info.extension
+        if anime_mode:
+            new_name = '[' + info.scene_group + '] ' + show_name + ' - ' + info.season + info.episode + ' - ' + info.title + ' ' + generate_media_info_format(info.media_info) + ' ' + info.hash_code + '.' + info.extension
+        else:
+            new_name = show_name + ' - ' + info.season + info.episode + ' - ' + info.title + '.' + info.extension
         renames.append(EpisodeRename(info.original_filename, new_name))
     return renames
 
@@ -106,12 +112,23 @@ def generate_season_map_file_renames(infos):
                 #episode_num = episode_num - delta
                 episode_seg = 'E' + parse.format_num(delta)
                 season_seg = 'S' + parse.format_num(bucket_index + 1)
-                # TODO: Place anime new_name code here
-                new_name = show_name + ' - ' + season_seg + episode_seg + ' - ' + info.title + '.' + info.extension
+                if anime_mode:
+                    new_name = '[' + info.scene_group + '] ' + show_name + ' - ' + season_seg + episode_seg + ' - ' + info.title + ' ' + generate_media_info_format(info.media_info) + ' ' + info.hash_code + '.' + info.extension
+                else:
+                    new_name = show_name + ' - ' + season_seg + episode_seg + ' - ' + info.title + '.' + info.extension
                 renames.append(EpisodeRename(info.original_filename, new_name))
                 break
         
     return renames
+
+def generate_media_info_format(media_info):
+    """ Returns a formatted string from a media info object """
+    if media_info.color_bits == '8':
+        color_bits = ''
+    else:
+        color_bits = media_info.color_bits + '-bit'
+    
+    return '[{0}]'.format(re.sub(r' +', ' ', ' '.join([media_info.resolution, media_info.source, media_info.audio_source, color_bits, media_info.encoding])))
 
 def generate_renames(infos):
     """ Given a list of EpisodeInfo objects, generate EpisodeRename objects using a renaming strategy best based on flags and metadata. """
@@ -145,6 +162,10 @@ def generate_episode_infos(root_dir):
                     info.episode = parse.parse_anime_episode(filename)
                     info.subtitle = find_subtitle(root_dir, filename) # TODO: See if this works fine for anime
                     info.extension = parts[1].replace('.', '')
+                    info.media_info = parse.parse_media_info(filename)
+                    info.title = parse.parse_anime_episode_title(filename)
+                    info.hash_code = parse.parse_anime_hash(filename)
+                    info.scene_group = parse.parse_anime_group(filename)
                     if season_num is None:
                         info.season = 'S01' # TODO: Figure out how to handle this. Assume Season 01 always? 
                     else:
@@ -155,6 +176,7 @@ def generate_episode_infos(root_dir):
                     info.subtitle = find_subtitle(root_dir, filename)
                     info.extension = parts[1].replace('.', '')
                     info.title = parse.parse_episode_title(filename)
+                    #info.media_info = parse.parse_media_info(filename) # TODO: Implement test cases to handle for non-anime
                     if season_num is None:
                         info.season = parse.parse_season(filename)
                     else:
@@ -171,7 +193,7 @@ def write_renames(root_dir, renames):
         else:
             os.rename(os.path.join(root_dir, rename.original_filename), os.path.join(root_dir, rename.new_filename))
 
-# Todo: figure out how to remove this global
+# TODO: Remove this and declare it in tests...
 global season_num
 season_num = None
 
@@ -194,7 +216,7 @@ if __name__ == '__main__':
     dry_run = bool(args.dry)
     eps_per_file = int(get_argument(args.eps_per_file, 1))
     verbose = bool(args.verbose)
-    anime_mode = bool(args.anime)
+    anime_mode = bool(get_argument(args.anime, False))
     
     season_maps = parse_season_map(get_argument(args.season_maps, '[]'))
     if len(season_maps) > 0:

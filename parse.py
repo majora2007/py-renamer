@@ -1,5 +1,6 @@
 import re
 from util import print_info
+from mediainfo import MediaInfo
 
 MEDIA_EXTENSIONS = ('.avi', '.mpeg', '.mp4', 'mkv', '.mpg', '.m4v', '.mpeg')
 SUBTITLE_EXTENSIONS = ('.srt', '.ass')
@@ -78,15 +79,51 @@ ANIME_EPISODE_NUM_REGEXS = [
 
 ANIME_EPISODE_TITLE_REGEXS = [
     # [CBM]_Gurren_Lagann_-_01_-_Bust_Through_the_Heavens_With_Your_Drill!_[720p]_[D2E69407].mkv
-    re.compile(r'(?:_-_)(?P<EpisodeTitle>[a-z_!]*)_', re.IGNORECASE)
+    re.compile(r'(?:_-_)(?P<EpisodeTitle>[a-z_!\']*)_', re.IGNORECASE)
+]
+ 
+MEDIA_INFO_RESOLUTION_REGEXS = [
+    # [UTW]_Accel_World_-_01_[h264-720p][7A2BE7A5].mkv
+    re.compile(r'(\(?\[?){1}(?P<MediaInfo>\d{3,4})(p).*', re.IGNORECASE),
+    # (1280x720 or [720p]
+    re.compile(r'(\(?\[?){1}(?P<MediaInfo>\d{3,4})(p|x)?.*', re.IGNORECASE)    
 ]
 
-# NOTE: This may need to be a class and multiple types of parsing to extract. 
-MEDIA_INFO_REGEXS = [
-
+MEDIA_INFO_SOURCE_REGEXS = [
+    # [Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv
+    re.compile(r'(\(?\[?){1}(?P<MediaInfo>Blu-Ray).*', re.IGNORECASE),
+    # [Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv
+    re.compile(r'(\(?\[?){1}(?P<MediaInfo>BD).*', re.IGNORECASE),
+    # BDRip
+    re.compile(r'(\(?\[?){1}(?P<MediaInfo>BDRip).*', re.IGNORECASE),
+    # HDTV
+    re.compile(r'(\(?\[?){1}(?P<MediaInfo>HDTV).*', re.IGNORECASE) 
 ]
 
+MEDIA_INFO_AUDIO_SOURCE_REGEXS = [
+    # [Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv
+    re.compile(r'(\(?\[?){1}(?P<MediaInfo>FLAC).*', re.IGNORECASE),
+    # [Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv
+    re.compile(r'(\(?\[?){1}(?P<MediaInfo>AAC).*', re.IGNORECASE) 
+]
 
+MEDIA_INFO_ENCODING_REGEXS = [
+    # h264, h265, x264
+    re.compile(r'(\(?\[?){1}(?P<MediaInfo>(h|x)2\d{2}).*', re.IGNORECASE)  
+]
+
+MEDIA_INFO_COLOR_BITS_REGEXS = [
+    # h264, h265, x264
+    re.compile(r'(\(?\[?){1}(?P<MediaInfo>\d{1,2}\-bit).*', re.IGNORECASE)  
+]
+
+MEDIA_INFO_REGEXS = {
+    'resolution': MEDIA_INFO_RESOLUTION_REGEXS,
+    'source': MEDIA_INFO_SOURCE_REGEXS,
+    'audio_source': MEDIA_INFO_AUDIO_SOURCE_REGEXS,
+    'encoding': MEDIA_INFO_ENCODING_REGEXS,
+    'color_bits': MEDIA_INFO_COLOR_BITS_REGEXS
+}
 
 
 
@@ -231,19 +268,40 @@ def parse_anime_episode_title(filename):
     return ''
 
 def parse_media_info(filename):
-    """ Given a filename, match media info and return media info with brackets. Returns None if no matches."""
+    """ Given a filename, match media info and return MediaInfo object. Returns empty MediaInfo if no matches."""
     print_info('Extracting hash from {0}'.format(filename))
-    for regex in MEDIA_INFO_REGEXS:
-        m = re.search(regex, filename)
+    media_info = MediaInfo()
+    for media_info_type in MEDIA_INFO_REGEXS:
+        #print_info('Parsing for {0}'.format(media_info_type))
+        for regex in MEDIA_INFO_REGEXS[media_info_type]:
+            m = re.search(regex, filename)
 
-        if m is None:
-            continue
+            if m is None:
+                continue
 
-        media_info = m.group('MediaInfo').upper()
-        print_info('Extracted Media Info: {0}'.format(media_info))
-        return media_info
+            extracted_data = m.group('MediaInfo').upper()
+            print_info('Extracted {0}: {1}'.format(media_info_type, extracted_data))
+
+            # Before we set, do any needed cleanup
+            if media_info_type == 'resolution':
+                if not extracted_data.endswith('p'):
+                    resolution = int(extracted_data)
+                    if resolution == 1280:
+                        extracted_data = '720'
+                    extracted_data = extracted_data + 'p'
+                media_info.resolution = extracted_data
+            if media_info_type == 'source':
+                media_info.source = extracted_data.replace('-', '')
+            elif media_info_type == 'audio_source':
+                media_info.audio_source = extracted_data
+            elif media_info_type == 'encoding':
+                media_info.encoding = re.sub('X', 'H', extracted_data)
+            elif media_info_type == 'color_bits':
+                media_info.color_bits = extracted_data
+            break
+            
     
-    return None
+    return media_info
 
 def clean_episode_title(filename):
     """ Removes special seperators like -,_  and leading spaces"""

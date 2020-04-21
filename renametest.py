@@ -188,13 +188,15 @@ class Test_TestRename(unittest.TestCase):
     def test_generate_season_map_file_renames_for_anime_1(self):
         rename.show_name = 'Gurren Lagann'
         rename.season_maps = [1, 2]
+        rename.anime_mode = True
+        rename.season_num = 1 # TODO: Figure out how to do or make optional if anime_mode
         infos = rename.generate_episode_infos(os.path.abspath('./tests/cases/Anime Season Maps/'))
         result = rename.generate_season_map_file_renames(infos)
 
         correct_renames = []
-        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_01_-_Bust_Through_the_Heavens_With_Your_Drill!_[720p]_[D2E69407].mkv', '[CBM] Gurren Lagann - S01E01 - Bust Through the Heavens With Your Drill! [720p] [D2E69407].mp4'))
-        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_02_-_I_Said_I\'m_Gonna_Pilot_That_Thing!!_[720p]_[19E9CF6F].mkv', 'Producing Parker - S02E01 - producing parker.mp4'))
-        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_03_-_Who_Do_You_Think_You_Are,_Having_Two_Faces!_[720p]_[659E4875].mkv', 'Producing Parker - S02E02 - producing parker.mp4'))
+        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_01_-_Bust_Through_the_Heavens_With_Your_Drill!_[720p]_[D2E69407].mkv', '[CBM] Gurren Lagann - S01E01 - Bust Through the Heavens With Your Drill! [720p H264] [D2E69407].mkv'))
+        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_02_-_I_Said_I\'m_Gonna_Pilot_That_Thing!!_[720p]_[19E9CF6F].mkv', '[CBM] Gurren Lagann - S02E02 - I Said I\'m Gonna Pilot That Thing!! [720p H264] [19E9CF6F].mkv'))
+        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_03_-_Who_Do_You_Think_You_Are,_Having_Two_Faces!_[720p]_[659E4875].mkv', '[CBM] Gurren Lagann - S02E03 - Who Do You Think You Are, Having Two Faces! [720p H264] [659E4875].mkv'))
         
         self.assertListEqual(result, correct_renames)
     

@@ -22,3 +22,4 @@ YP-WOY-01x34_01x35-1R-The_Big_Job-The_Helper.mkv -> Wander Over Yonder - S01E34 
 * Implement season maps in conjunction with eps_per_file
 * Implement Anime support (ensure hashes are copied over, consistent series name mapping, abs number support, etc)
 * Interactive mode? Let user do substring replacement?
+* Implement media Info support for non-anime
