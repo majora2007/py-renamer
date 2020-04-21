@@ -216,7 +216,7 @@ if __name__ == '__main__':
     dry_run = bool(args.dry)
     eps_per_file = int(get_argument(args.eps_per_file, 1))
     verbose = bool(args.verbose)
-    anime_mode = bool(get_argument(args.anime, False))
+    anime_mode = bool(args.anime)
     
     season_maps = parse_season_map(get_argument(args.season_maps, '[]'))
     if len(season_maps) > 0:
