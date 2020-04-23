@@ -99,7 +99,6 @@ class Test_TestRename(unittest.TestCase):
         TestDataGenerator.clean_up_generated_data(os.path.abspath('./tests/cases/'))
 
     
-    
     def test_generate_episode_infos(self):
         root_dir = os.path.abspath('./tests/cases/The Weekenders - Parts/')
         result = rename.generate_episode_infos(root_dir)
