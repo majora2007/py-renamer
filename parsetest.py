@@ -1,5 +1,6 @@
 import unittest
 import parse
+from mediainfo import MediaInfo
 
 class Test_TestParse(unittest.TestCase):
     def test_parse_season(self):
@@ -44,11 +45,24 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode('s1ep02 be a pal.avi'), 'E02')
 
         
+    def test_parse_anime_hash(self):
+        self.assertEqual(parse.parse_anime_hash('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), '[E1AC4C4A]')    
+        self.assertEqual(parse.parse_anime_hash('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), '[F9915E0F]')
         
-        
-        
-        
+    def test_parse_anime_group(self):
+        self.assertEqual(parse.parse_anime_group('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), 'Coalgirls')    
+        self.assertEqual(parse.parse_anime_group('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), 'Doki')
     
+    def test_parse_anime_episode(self):
+        self.assertEqual(parse.parse_anime_episode('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), 'E01')    
+        self.assertEqual(parse.parse_anime_episode('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), 'E01')
+
+    def test_parse_anime_episode_title(self):
+        self.assertEqual(parse.parse_anime_episode_title('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), '')    
+        self.assertEqual(parse.parse_anime_episode_title('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), '')
+        self.assertEqual(parse.parse_anime_episode_title('[CBM]_Gurren_Lagann_-_01_-_Bust_Through_the_Heavens_With_Your_Drill!_[720p]_[D2E69407].mkv'), 'Bust Through the Heavens With Your Drill!')
+        self.assertEqual(parse.parse_anime_episode_title('[CBM]_Gurren_Lagann_-_02_-_I_Said_I\'m_Gonna_Pilot_That_Thing!!_[720p]_[19E9CF6F].mkv'), 'I Said I\'m Gonna Pilot That Thing!!')
+
     def test_parse_episode_part(self):
         self.assertEqual(parse.parse_episode_part('S01E02'), 0)
         self.assertEqual(parse.parse_episode_part('Grojband - S01E01A'), 1)
@@ -75,9 +89,12 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_episode_title('s1ep02 be a pal'), 'be a pal')
         self.assertEqual(parse.parse_episode_title('BBC.Natures.Microworlds.01of13.Galapagos.720p.HDTV.x264.AAC.MVGroup.org'), '.Galapagos.720p.HDTV.x264.AAC.MVGroup.org')
         
-        
-        
-        
+
+    def test_parse_media_info(self):
+        self.assertEqual(parse.parse_media_info('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), MediaInfo('720p', 'BLURAY', 'FLAC', '8', 'H264'))
+        self.assertEqual(parse.parse_media_info('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), MediaInfo('720p', 'BD', 'AAC', '8', 'H264'))
+        self.assertEqual(parse.parse_media_info('[UTW]_Accel_World_-_01_[h264-720p][7A2BE7A5].mkv'), MediaInfo('720p', '', '', '8', 'H264'))
+        self.assertEqual(parse.parse_media_info('Brooklyn.Nine-Nine.S07E07.720p.HDTV.x264-KILLERS'), MediaInfo('720p', 'HDTV', '', '8', 'H264'))
 
     def test_is_media_file(self):
         self.assertEqual(parse.is_media_file('joe.mp4'), True)
