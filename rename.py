@@ -28,6 +28,7 @@ def init_args():
     parser.add_argument('--verbose', required=False, action='store_true', help="Detailed output")
     parser.add_argument('--season_maps', required=False, nargs=1, help="A set of episodes per season. ie) [2,2,1] -> S1 has 2 ep, S2 has 2 eps, S3 has 1")
     parser.add_argument('--anime', required=False, action='store_true', help='Use anime logic for reanming files. Keeps hashes and scene groups on rename.')
+    parser.add_argument('--offset', required=False, nargs=1, help="If passed, episodes will start at the offset. ie) episode 1 with offset of 4 writes as episode 5. Useful for combining seasons together. Does not work with season maps.")
     return parser.parse_args()
 
 def find_subtitle(root_dir, filename):
@@ -70,6 +71,7 @@ def generate_multiple_part_per_file_renames(infos):
 
     return renames
 
+
 def generate_derived_season_renames(infos):
     """ Uses a renamer suitable for handling files with derived seasons. (Season 1 Episode 1 -> S01E01). """
     renames = []
@@ -79,11 +81,16 @@ def generate_derived_season_renames(infos):
             sep_and_title = ''
         else:
             sep_and_title = ' - ' + info.title
+        
+        episode = info.episode
+        if offset > 0:
+            episode = 'E' + parse.format_num(int(info.episode.replace('E', '')) + offset)
+        
         if anime_mode:
             media_and_hash = (' ' + generate_media_info_format(info.media_info) + ' ' + info.hash_code).strip()
-            new_name = '[' + info.scene_group + '] ' + show_name + ' - ' + info.season + info.episode + sep_and_title + media_and_hash + '.' + info.extension
+            new_name = '[' + info.scene_group + '] ' + show_name + ' - ' + info.season + episode + sep_and_title + media_and_hash + '.' + info.extension
         else:
-            new_name = show_name + ' - ' + info.season + info.episode + sep_and_title + '.' + info.extension
+            new_name = show_name + ' - ' + info.season + episode + sep_and_title + '.' + info.extension
         renames.append(EpisodeRename(info.original_filename, new_name.strip()))
     return renames
 
@@ -234,6 +241,7 @@ if __name__ == '__main__':
     eps_per_file = int(get_argument(args.eps_per_file, 1))
     verbose = bool(args.verbose)
     anime_mode = bool(args.anime)
+    offset = int(get_argument(args.offset, 0))
     
     season_maps = parse_season_map(get_argument(args.season_maps, '[]'))
     if len(season_maps) > 0:

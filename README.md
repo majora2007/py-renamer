@@ -8,4 +8,5 @@ Download this from git and place somewhere on your computer. Put that location i
 `python rename.py --show_name "My show here"`
 This is the minimum required command to execute. You can get more commands from the rename.py file.
 
+# Arguments
 
