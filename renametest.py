@@ -223,6 +223,19 @@ class Test_TestRename(unittest.TestCase):
         self.assertFalse(rename.info_has_parts([]))
         self.assertFalse(rename.info_has_parts([EpisodeInfo(root_dir, 'S01E02b - Sense and Sensitivity')]))
     
+    def test_generate_derived_season_renames_with_offset(self):
+        rename.show_name = 'Producing Parker'
+        rename.offset = 4
+        infos = rename.generate_episode_infos(os.path.abspath('./tests/cases/Producing Parker - season maps/'))
+        result = rename.generate_derived_season_renames(infos)
+
+        correct_renames = []
+        correct_renames.append(EpisodeRename('producing-parker-season-1-episode-1-producing-parker.mp4', 'Producing Parker - S01E05 - producing parker.mp4'))
+        correct_renames.append(EpisodeRename('producing-parker-season-1-episode-2-producing-parker.mp4', 'Producing Parker - S01E06 - producing parker.mp4'))
+        correct_renames.append(EpisodeRename('producing-parker-season-1-episode-3-producing-parker.mp4', 'Producing Parker - S01E07 - producing parker.mp4'))
+        
+        self.assertListEqual(result, correct_renames)
+    
     def test_sum_until(self):
         self.assertIs(rename.sum_until([1, 1, 1, 2], 1), 1)
         self.assertIs(rename.sum_until([1, 1, 1, 2], 0), 0)
