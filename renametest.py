@@ -114,6 +114,7 @@ class Test_TestRename(unittest.TestCase):
         correct_renames.append(EpisodeRename('S01E02a - Shoes of Destiny.mp4', 'The Weekenders - S01E03 - Shoes of Destiny.mp4'))
         correct_renames.append(EpisodeRename('S01E02b - Sense and Sensitivity.mp4', 'The Weekenders - S01E04 - Sense and Sensitivity.mp4'))
         correct_renames.append(EpisodeRename('S01E03a - Shoes.mp4', 'The Weekenders - S01E05 - Shoes.mp4'))
+        
         self.assertListEqual(result, correct_renames)
     
     def test_generate_multiple_part_per_file_renames(self):
@@ -171,6 +172,20 @@ class Test_TestRename(unittest.TestCase):
 
         self.assertListEqual(result, [EpisodeRename('martin-mystery-episode-65-its-alive-part-1.mp4', 'Martin Mystery - S01E65 - its alive part 1.mp4')])
     
+    def test_generate_derived_season_renames_anime_1(self):
+        rename.show_name = 'Masamune-kun no Revenge'
+        
+        a_mode = rename.anime_mode
+        rename.anime_mode = True
+        
+
+        infos = rename.generate_episode_infos(os.path.abspath('./tests/cases/[Judas] Masamune-kun no Revenge (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/'))
+        result = rename.generate_derived_season_renames(infos)
+        
+        rename.anime_mode = a_mode
+
+        self.assertEqual(result[0], EpisodeRename('[Judas] Masamune-kun no Revenge - 01.mkv', '[Judas] Masamune-kun no Revenge - S01E01.mkv'))
+    
     def test_generate_season_map_file_renames(self):
         rename.show_name = 'Producing Parker'
         rename.season_maps = [1, 2]
@@ -191,11 +206,15 @@ class Test_TestRename(unittest.TestCase):
         rename.season_num = 1 # TODO: Figure out how to do or make optional if anime_mode
         infos = rename.generate_episode_infos(os.path.abspath('./tests/cases/Anime Season Maps/'))
         result = rename.generate_season_map_file_renames(infos)
+        
+        print('Generated')
+        print(result[1])
+
 
         correct_renames = []
-        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_01_-_Bust_Through_the_Heavens_With_Your_Drill!_[720p]_[D2E69407].mkv', '[CBM] Gurren Lagann - S01E01 - Bust Through the Heavens With Your Drill! [720p H264] [D2E69407].mkv'))
-        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_02_-_I_Said_I\'m_Gonna_Pilot_That_Thing!!_[720p]_[19E9CF6F].mkv', '[CBM] Gurren Lagann - S02E02 - I Said I\'m Gonna Pilot That Thing!! [720p H264] [19E9CF6F].mkv'))
-        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_03_-_Who_Do_You_Think_You_Are,_Having_Two_Faces!_[720p]_[659E4875].mkv', '[CBM] Gurren Lagann - S02E03 - Who Do You Think You Are, Having Two Faces! [720p H264] [659E4875].mkv'))
+        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_01_-_Bust_Through_the_Heavens_With_Your_Drill!_[720p]_[D2E69407].mkv', '[CBM] Gurren Lagann - S01E01 - Bust Through the Heavens With Your Drill![720p] [D2E69407].mkv'))
+        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_02_-_I_Said_I\'m_Gonna_Pilot_That_Thing!!_[720p]_[19E9CF6F].mkv', '[CBM] Gurren Lagann - S02E01 - I Said I\'m Gonna Pilot That Thing!![720p] [19E9CF6F].mkv'))
+        correct_renames.append(EpisodeRename('[CBM]_Gurren_Lagann_-_03_-_Who_Do_You_Think_You_Are,_Having_Two_Faces!_[720p]_[659E4875].mkv', '[CBM] Gurren Lagann - S02E02 - Who Do You Think You Are, Having Two Faces![720p] [659E4875].mkv'))
         
         self.assertListEqual(result, correct_renames)
     

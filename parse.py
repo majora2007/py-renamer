@@ -74,12 +74,13 @@ ANIME_GROUP_REGEXS = [
 ]
 
 ANIME_EPISODE_NUM_REGEXS = [
-    re.compile(r'_(?P<Episode>\d+)(v\d)?_', re.IGNORECASE) # _(?P<EpisodeTitle>\d*[\w_(\-\b)?!]*)-?_\d
+    re.compile(r'_(?P<Episode>\d+)(v\d)?_', re.IGNORECASE), # _(?P<EpisodeTitle>\d*[\w_(\-\b)?!]*)-?_\d
+    re.compile(r'(?P<Episode>\d+)(v\d)?', re.IGNORECASE)
 ]
 
 ANIME_EPISODE_TITLE_REGEXS = [
     # [CBM]_Gurren_Lagann_-_01_-_Bust_Through_the_Heavens_With_Your_Drill!_[720p]_[D2E69407].mkv
-    re.compile(r'(?:_-_)(?P<EpisodeTitle>[a-z_!\']*)_', re.IGNORECASE)
+    re.compile(r'(?:_-_)(?P<EpisodeTitle>[a-z_!\',]*)_', re.IGNORECASE)
 ]
  
 MEDIA_INFO_RESOLUTION_REGEXS = [
@@ -218,7 +219,7 @@ def parse_anime_hash(filename):
         print_info('Extracted Hash: {0}'.format(ep_hash))
         return ep_hash
     
-    return None
+    return ''
 
 def parse_anime_group(filename):
     """ Given a filename, match anime sub group and return group without brackets. Returns None if no matches."""

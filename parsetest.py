@@ -48,6 +48,7 @@ class Test_TestParse(unittest.TestCase):
     def test_parse_anime_hash(self):
         self.assertEqual(parse.parse_anime_hash('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), '[E1AC4C4A]')    
         self.assertEqual(parse.parse_anime_hash('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), '[F9915E0F]')
+        self.assertEqual(parse.parse_anime_hash('[Judas] Masamune-kun no Revenge - 01.mkv'), '')
         
     def test_parse_anime_group(self):
         self.assertEqual(parse.parse_anime_group('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), 'Coalgirls')    
@@ -56,6 +57,8 @@ class Test_TestParse(unittest.TestCase):
     def test_parse_anime_episode(self):
         self.assertEqual(parse.parse_anime_episode('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), 'E01')    
         self.assertEqual(parse.parse_anime_episode('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), 'E01')
+        self.assertEqual(parse.parse_anime_episode('[Judas] Masamune-kun no Revenge - 01.mkv'), 'E01')
+        
 
     def test_parse_anime_episode_title(self):
         self.assertEqual(parse.parse_anime_episode_title('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), '')    
@@ -91,7 +94,7 @@ class Test_TestParse(unittest.TestCase):
         
 
     def test_parse_media_info(self):
-        self.assertEqual(parse.parse_media_info('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), MediaInfo('720p', 'BLURAY', 'FLAC', '8', 'H264'))
+        self.assertEqual(parse.parse_media_info('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), MediaInfo('720p', 'BLURAY', 'FLAC', '8', ''))
         self.assertEqual(parse.parse_media_info('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), MediaInfo('720p', 'BD', 'AAC', '8', 'H264'))
         self.assertEqual(parse.parse_media_info('[UTW]_Accel_World_-_01_[h264-720p][7A2BE7A5].mkv'), MediaInfo('720p', '', '', '8', 'H264'))
         self.assertEqual(parse.parse_media_info('Brooklyn.Nine-Nine.S07E07.720p.HDTV.x264-KILLERS'), MediaInfo('720p', 'HDTV', '', '8', 'H264'))

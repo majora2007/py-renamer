@@ -3,9 +3,9 @@ class MediaInfo(object):
     source = '' # BD, WEBRip
     audio_source = '' # FLAC
     color_bits = '8' # 10-bit color
-    encoding = 'H264'
+    encoding = '' # H264/H265/HEVC
 
-    def __init__(self, resolution='', source='', audio_source='', color_bits='8', encoding='H264'):
+    def __init__(self, resolution='', source='', audio_source='', color_bits='8', encoding=''):
         self.resolution = resolution
         self.source = source
         self.audio_source = audio_source

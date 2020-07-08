@@ -75,11 +75,16 @@ def generate_derived_season_renames(infos):
     renames = []
     
     for info in infos:
-        if anime_mode:
-            new_name = '[' + info.scene_group + '] ' + show_name + ' - ' + info.season + info.episode + ' - ' + info.title + ' ' + generate_media_info_format(info.media_info) + ' ' + info.hash_code + '.' + info.extension
+        if len(info.title) == 0:
+            sep_and_title = ''
         else:
-            new_name = show_name + ' - ' + info.season + info.episode + ' - ' + info.title + '.' + info.extension
-        renames.append(EpisodeRename(info.original_filename, new_name))
+            sep_and_title = ' - ' + info.title
+        if anime_mode:
+            media_and_hash = (' ' + generate_media_info_format(info.media_info) + ' ' + info.hash_code).strip()
+            new_name = '[' + info.scene_group + '] ' + show_name + ' - ' + info.season + info.episode + sep_and_title + media_and_hash + '.' + info.extension
+        else:
+            new_name = show_name + ' - ' + info.season + info.episode + sep_and_title + '.' + info.extension
+        renames.append(EpisodeRename(info.original_filename, new_name.strip()))
     return renames
 
 def sum_until(arr, idx):
@@ -112,10 +117,17 @@ def generate_season_map_file_renames(infos):
                 #episode_num = episode_num - delta
                 episode_seg = 'E' + parse.format_num(delta)
                 season_seg = 'S' + parse.format_num(bucket_index + 1)
-                if anime_mode:
-                    new_name = '[' + info.scene_group + '] ' + show_name + ' - ' + season_seg + episode_seg + ' - ' + info.title + ' ' + generate_media_info_format(info.media_info) + ' ' + info.hash_code + '.' + info.extension
+                if len(info.title) == 0:
+                        sep_and_title = ''
                 else:
-                    new_name = show_name + ' - ' + season_seg + episode_seg + ' - ' + info.title + '.' + info.extension
+                    sep_and_title = ' - ' + info.title
+
+                if anime_mode:
+                    media_and_hash = (' ' + generate_media_info_format(info.media_info) + ' ' + info.hash_code).strip()
+                    #new_name = '[{scene_group}] {show_name} - {season_seg}{episode_seg} - {title}{media_and_hash}.{extension}'
+                    new_name = '[' + info.scene_group + '] ' + show_name + ' - ' + season_seg + episode_seg + sep_and_title + media_and_hash + '.' + info.extension
+                else:
+                    new_name = show_name + ' - ' + season_seg + episode_seg + sep_and_title + '.' + info.extension
                 renames.append(EpisodeRename(info.original_filename, new_name))
                 break
         
@@ -128,7 +140,12 @@ def generate_media_info_format(media_info):
     else:
         color_bits = media_info.color_bits + '-bit'
     
-    return '[{0}]'.format(re.sub(r' +', ' ', ' '.join([media_info.resolution, media_info.source, media_info.audio_source, color_bits, media_info.encoding])))
+    inner = '{0}'.format(re.sub(r' +', ' ', ' '.join([media_info.resolution, media_info.source, media_info.audio_source, color_bits, media_info.encoding]))).strip()
+
+    if len(inner) == 0:
+        return ''
+    
+    return '[{0}]'.format(inner)
 
 def generate_renames(infos):
     """ Given a list of EpisodeInfo objects, generate EpisodeRename objects using a renaming strategy best based on flags and metadata. """
