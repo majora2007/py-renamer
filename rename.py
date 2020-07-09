@@ -20,9 +20,9 @@ def init_args():
     parser = argparse.ArgumentParser()
     # Required Parameters
     parser.add_argument('--show_name', required=True, nargs=1, help="Name of the Show. Will be used in rename")
-    parser.add_argument('--season', required=False, nargs=1, help="Season for rename")
 
 	# Optional Parameters
+    parser.add_argument('--season', required=False, nargs=1, help="Season for rename")
     parser.add_argument('--eps_per_file', required=False, nargs=1, help="Number of episodes per file")
     parser.add_argument('--dry', required=False, action='store_true', help="Perform a dry run. Does not perform a rename")
     parser.add_argument('--verbose', required=False, action='store_true', help="Detailed output")
