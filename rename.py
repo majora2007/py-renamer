@@ -83,8 +83,9 @@ def generate_derived_season_renames(infos):
             sep_and_title = ' - ' + info.title
         
         episode = info.episode
-        if offset > 0:
-            episode = 'E' + parse.format_num(int(info.episode.replace('E', '')) + offset)
+        if offset != 0:
+            num = (int(info.episode.replace('E', '')) + offset) or 1 # Default to 1 if we go <= 0, as episodes min should be 1
+            episode = 'E' + parse.format_num(num)
         
         if anime_mode:
             media_and_hash = (' ' + generate_media_info_format(info.media_info) + ' ' + info.hash_code).strip()
