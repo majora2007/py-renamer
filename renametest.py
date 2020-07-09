@@ -236,6 +236,19 @@ class Test_TestRename(unittest.TestCase):
         
         self.assertListEqual(result, correct_renames)
     
+    def test_generate_derived_season_renames_with_offset_negative(self):
+        rename.show_name = 'Producing Parker'
+        rename.offset = -1
+        infos = rename.generate_episode_infos(os.path.abspath('./tests/cases/Producing Parker - negative offset/'))
+        result = rename.generate_derived_season_renames(infos)
+
+        correct_renames = []
+        correct_renames.append(EpisodeRename('producing-parker-season-1-episode-2-producing-parker.mp4', 'Producing Parker - S01E01 - producing parker.mp4'))
+        correct_renames.append(EpisodeRename('producing-parker-season-1-episode-3-producing-parker.mp4', 'Producing Parker - S01E02 - producing parker.mp4'))
+        correct_renames.append(EpisodeRename('producing-parker-season-1-episode-4-producing-parker.mp4', 'Producing Parker - S01E03 - producing parker.mp4'))
+        
+        self.assertListEqual(result, correct_renames)
+    
     def test_sum_until(self):
         self.assertIs(rename.sum_until([1, 1, 1, 2], 1), 1)
         self.assertIs(rename.sum_until([1, 1, 1, 2], 0), 0)
