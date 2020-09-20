@@ -75,7 +75,8 @@ ANIME_GROUP_REGEXS = [
 
 ANIME_EPISODE_NUM_REGEXS = [
     re.compile(r'_(?P<Episode>\d+)(v\d)?_', re.IGNORECASE), # _(?P<EpisodeTitle>\d*[\w_(\-\b)?!]*)-?_\d
-    re.compile(r'(?P<Episode>\d+)(v\d)?', re.IGNORECASE)
+    # Not Hi10, not resolution.
+    re.compile(r'[^Hi](?P<Episode>\d+)(v\d)?[^p\)\]]', re.IGNORECASE)
 ]
 
 ANIME_EPISODE_TITLE_REGEXS = [
@@ -307,7 +308,7 @@ def parse_media_info(filename):
 def clean_episode_title(filename):
     """ Removes special seperators like -,_  and leading spaces"""
     new_str = filename.replace('_', ' ').replace('-', ' ')
-    return re.sub('\s+', ' ', new_str).strip()
+    return re.sub(r'\s+', ' ', new_str).strip()
 
 def is_special_season(season_str):
     """ Returns True if Season is formated as Special (ie S00) """

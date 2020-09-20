@@ -58,13 +58,14 @@ class Test_TestParse(unittest.TestCase):
         self.assertEqual(parse.parse_anime_episode('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), 'E01')    
         self.assertEqual(parse.parse_anime_episode('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), 'E01')
         self.assertEqual(parse.parse_anime_episode('[Judas] Masamune-kun no Revenge - 01.mkv'), 'E01')
-        
+        self.assertEqual(parse.parse_anime_episode('(Hi10)Hajime_no_Ippo_New_Challenger-25(720p)(SZN&_IO).mkv'), 'E25')
 
     def test_parse_anime_episode_title(self):
         self.assertEqual(parse.parse_anime_episode_title('[Coalgirls]_Ro-Kyu-Bu!_SS_01_(1280x720_Blu-Ray_FLAC)_[E1AC4C4A].mkv'), '')    
         self.assertEqual(parse.parse_anime_episode_title('[Doki]_30-sai_no_Hoken_Taiiku_-_01v2_(1280x720_h264_BD_AAC)_[F9915E0F].mkv'), '')
         self.assertEqual(parse.parse_anime_episode_title('[CBM]_Gurren_Lagann_-_01_-_Bust_Through_the_Heavens_With_Your_Drill!_[720p]_[D2E69407].mkv'), 'Bust Through the Heavens With Your Drill!')
         self.assertEqual(parse.parse_anime_episode_title('[CBM]_Gurren_Lagann_-_02_-_I_Said_I\'m_Gonna_Pilot_That_Thing!!_[720p]_[19E9CF6F].mkv'), 'I Said I\'m Gonna Pilot That Thing!!')
+        
 
     def test_parse_episode_part(self):
         self.assertEqual(parse.parse_episode_part('S01E02'), 0)
