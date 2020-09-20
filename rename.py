@@ -88,8 +88,12 @@ def generate_derived_season_renames(infos):
             episode = 'E' + parse.format_num(num)
         
         if anime_mode:
+            if info.scene_group is not None:
+                scene_group = '[' + str(info.scene_group) + '] '
+            else:
+                scene_group = ''
             media_and_hash = (' ' + generate_media_info_format(info.media_info) + ' ' + info.hash_code).strip()
-            new_name = '[' + info.scene_group + '] ' + show_name + ' - ' + info.season + episode + sep_and_title + media_and_hash + '.' + info.extension
+            new_name = scene_group + show_name + ' - ' + info.season + episode + sep_and_title + media_and_hash + '.' + info.extension
         else:
             new_name = show_name + ' - ' + info.season + episode + sep_and_title + '.' + info.extension
         renames.append(EpisodeRename(info.original_filename, new_name.strip()))
