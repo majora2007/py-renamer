@@ -215,17 +215,16 @@ def generate_episode_infos(root_dir):
                         info.season = 'S01'  # TODO: Figure out how to handle this. Assume Season 01 always?
                     else:
                         info.season = 'S' + parse.format_num(int(season_num))
+                elif manga_mode:
+                    pass
                 else:
-                    info.episode = parse.parse_episode(filename)
-                    info.part_num = parse.parse_episode_part(filename)
-                    info.subtitle = find_subtitle(root_dir, filename)
+                    info.episode = parse.parse_chapter(filename)
                     info.extension = parts[1].replace('.', '')
-                    info.title = parse.parse_episode_title(filename)
-                    # info.media_info = parse.parse_media_info(filename) # TODO: Implement test cases to handle for non-anime
+                    info.title = parse.parse_manga_title(filename)
                     if season_num is None:
-                        info.season = parse.parse_season(filename)
+                        info.season = parse.parse_volume(filename)
                     else:
-                        info.season = 'S' + parse.format_num(int(season_num))
+                        info.season = 'Volume ' + parse.format_num(int(season_num))
                 file_infos.append(info)
     return file_infos
 
@@ -265,7 +264,12 @@ if __name__ == '__main__':
     eps_per_file = int(get_argument(args.eps_per_file, 1))
     verbose = bool(args.verbose)
     anime_mode = bool(args.anime)
+    manga_mode = bool(args.manga)
     offset = int(get_argument(args.offset, 0))
+
+    if anime_mode and manga_mode:
+        print('Anime mode and manga mode cannot both be true')
+        exit(-1)
 
     season_maps = parse_season_map(get_argument(args.season_maps, '[]'))
     if len(season_maps) > 0:
