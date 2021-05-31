@@ -86,7 +86,7 @@ class Test_TestRename(unittest.TestCase):
 
     @classmethod
     def setUpClass(self):
-        '''Unpack tests/ directory. Any -tests.txt files should be expanded into fake .mp4 files'''
+        """Unpack tests/ directory. Any -tests.txt files should be expanded into fake .mp4 files"""
         for _, _, files in os.walk(os.path.abspath('./tests/cases/')):
             for file in files:
                 if file.endswith('-testcase.txt'):

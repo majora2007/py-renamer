@@ -4,6 +4,7 @@ from mediainfo import MediaInfo
 
 MEDIA_EXTENSIONS = ('.avi', '.mpeg', '.mp4', 'mkv', '.mpg', '.m4v', '.mpeg')
 SUBTITLE_EXTENSIONS = ('.srt', '.ass')
+MANGA_EXTENSIONS = ('.cbz', '.cbr', '.zip', '.rar', '.epub')
 
 EPISODE_NUM_REGEXS = [
     # show-season-1-episode-1
@@ -321,6 +322,10 @@ def is_media_file(file):
 def is_subtitle(file):
     """ Returns true if file is a known subtitle extension. This list is self-maintained. """
     return file.lower().endswith(SUBTITLE_EXTENSIONS)
+
+def is_manga(file):
+    """ Returns true if file is a known manga file extension. This list is self-maintained. """
+    return file.lower().endswith(MANGA_EXTENSIONS)
 
 def format_num(num):
     """ Formats a number to have leading 0 if below 10 """
