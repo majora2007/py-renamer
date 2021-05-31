@@ -4,6 +4,7 @@ from mediainfo import MediaInfo
 
 MEDIA_EXTENSIONS = ('.avi', '.mpeg', '.mp4', 'mkv', '.mpg', '.m4v', '.mpeg')
 SUBTITLE_EXTENSIONS = ('.srt', '.ass')
+MANGA_EXTENSIONS = ('.cbz', '.cbr', '.zip', '.rar', '.epub')
 
 EPISODE_NUM_REGEXS = [
     # show-season-1-episode-1
@@ -30,7 +31,7 @@ EPISODE_NUM_REGEXS = [
 
 SEASON_REGEX = [
     # show-season-1-eps-1
-    re.compile(r'.*[-_]?season.{1}(?P<Season>\d+)', re.IGNORECASE),
+    re.compile(r'.*[-_]?(season).{1}(?P<Season>\d+)', re.IGNORECASE),
     # S01E01
     re.compile(r'(?P<Show>.*?)S(?P<Season>\d+)E?\d+.*', re.IGNORECASE),
     # S01EP01
@@ -126,6 +127,63 @@ MEDIA_INFO_REGEXS = {
     'encoding': MEDIA_INFO_ENCODING_REGEXS,
     'color_bits': MEDIA_INFO_COLOR_BITS_REGEXS
 }
+
+MANGA_TITLE_REGEX = [
+    # Dance in the Vampire Bund v16-17
+    re.compile(r'(?P<Series>.*)(\b|_)v(?P<Volume>\d+-?\d+)( |_)', re.IGNORECASE),
+    # NEEDLESS_Vol.4_-Simeon_6_v2[SugoiSugoi].rar
+    re.compile(r'(?P<Series>.*)(\b|_)(?!\[)(vol\.?)(?P<Volume>\d+(-\d+)?)(?!\])', re.IGNORECASE),
+    # Historys Strongest Disciple Kenichi_v11_c90-98.zip or Dance in the Vampire Bund v16-17
+    re.compile(r'(?P<Series>.*)(\b|_)(?!\[)v(?P<Volume>\d+(-\d+)?)(?!\])', re.IGNORECASE),
+    # Kodomo no Jikan vol. 10
+    re.compile(r'(?P<Series>.*)(\b|_)(vol\.? ?)(?P<Volume>\d+(-\d+)?)', re.IGNORECASE),
+    # Killing Bites Vol. 0001 Ch. 0001 - Galactica Scanlations (gb)
+    re.compile(r'(vol\.? ?)(?P<Volume>\d+)', re.IGNORECASE),
+    # Tonikaku Cawaii [Volume 11].cbz
+    re.compile(r'(volume )(?P<Volume>\d+)', re.IGNORECASE),
+    # Tower Of God S01 014 (CBT) (digital).cbz
+    re.compile(r'(?P<Series>.*)(\b|_|)(S(?P<Volume>\d+))', re.IGNORECASE),
+]
+
+MANGA_VOLUME_REGEX = [
+    # Dance in the Vampire Bund v16-17
+    re.compile(r'(?P<Series>.*)(\b|_)v(?P<Volume>\d+-?\d+)( |_)', re.IGNORECASE),
+    # NEEDLESS_Vol.4_-Simeon_6_v2[SugoiSugoi].rar
+    re.compile(r'(?P<Series>.*)(\b|_)(?!\[)(vol\.?)(?P<Volume>\d+(-\d+)?)(?!\])', re.IGNORECASE),
+    # Historys Strongest Disciple Kenichi_v11_c90-98.zip or Dance in the Vampire Bund v16-17
+    re.compile(r'(?P<Series>.*)(\b|_)(?!\[)v(?P<Volume>\d+(-\d+)?)(?!\])', re.IGNORECASE),
+    # Kodomo no Jikan vol. 10
+    re.compile(r'(?P<Series>.*)(\b|_)(vol\.? ?)(?P<Volume>\d+(-\d+)?)', re.IGNORECASE),
+    # Killing Bites Vol. 0001 Ch. 0001 - Galactica Scanlations (gb)
+    re.compile(r'(vol\.? ?)(?P<Volume>\d+)', re.IGNORECASE),
+    # Tonikaku Cawaii [Volume 11].cbz
+    re.compile(r'(volume )(?P<Volume>\d+)', re.IGNORECASE),
+    # Tower Of God S01 014 (CBT) (digital).cbz
+    re.compile(r'(?P<Series>.*)(\b|_|)(S(?P<Volume>\d+))', re.IGNORECASE)
+]
+
+MANGA_CHAPTER_REGEX = [
+    # Historys Strongest Disciple Kenichi_v11_c90-98.zip, ...c90.5-100.5
+    re.compile(r'(\b|_)(c|ch)(\.?\s?)(?P<Chapter>(\d+(\.\d)?)-?(\d+(\.\d)?)?)', re.IGNORECASE),
+    # [Suihei Kiki]_Kasumi_Otoko_no_Ko_[Taruby]_v1.1.zip
+    re.compile(r'v\d+\.(?P<Chapter>\d+(?:.\d+|-\d+)?)', re.IGNORECASE),
+    # Umineko no Naku Koro ni - Episode 3 - Banquet of the Golden Witch #02.cbz (Rare case, if causes issue remove)
+    re.compile(r'^(?P<Series>.*)(?: |_)#(?P<Chapter>\d+)', re.IGNORECASE),
+    # Green Worldz - Chapter 027
+    re.compile(r'^(?!Vol)(?P<Series>.*)\s?(?<!vol\. )\sChapter\s(?P<Chapter>\d+(?:.\d+|-\d+)?)', re.IGNORECASE),
+    # Hinowa ga CRUSH! 018 (2019) (Digital) (LuCaZ).cbz, Hinowa ga CRUSH! 018.5 (2019) (Digital) (LuCaZ).cbz
+    re.compile(r'^(?!Vol)(?P<Series>.*) (?<!vol\. )(?P<Chapter>\d+(?:.\d+|-\d+)?)(?: \(\d{4}\))?(\b|_|-)', re.IGNORECASE),
+    # Tower Of God S01 014 (CBT) (digital).cbz
+    re.compile(r'(?P<Series>.*) S(?P<Volume>\d+) (?P<Chapter>\d+(?:.\d+|-\d+)?)', re.IGNORECASE),
+    # Beelzebub_01_[Noodles].zip, Beelzebub_153b_RHS.zip
+    re.compile(r'^((?!v|vo|vol|Volume).)*( |_)(?P<Chapter>\.?\d+(?:.\d+|-\d+)?)(?P<ChapterPart>b)?( |_|\[|\()', re.IGNORECASE),
+    # Yumekui-Merry_DKThias_Chapter21.zip
+    re.compile(r'Chapter(?P<Chapter>\d+(-\d+)?)", //(?:.\d+|-\d+)?', re.IGNORECASE),
+    # [Hidoi]_Amaenaideyo_MS_vol01_chp02.rar
+    re.compile(r'(?P<Series>.*)( |_)(vol\d+)?( |_)Chp\.? ?(?P<Chapter>\d+)', re.IGNORECASE),
+]
+
+
 
 
 
@@ -269,6 +327,56 @@ def parse_anime_episode_title(filename):
         return clean_episode_title(extracted_title)
     return ''
 
+def parse_volume(filename):
+    """ Attempts to parse Volume from filename. If no season is found, returns Volume 0. """
+    print_info('Extracting volume from {0}'.format(filename))
+    for regex in MANGA_VOLUME_REGEX:
+        m = re.search(regex, filename)
+
+        if m is None:
+            continue
+
+        extracted_season = m.group('Volume').lower()
+        print_info('Extracted volume: {0}'.format(extracted_season))
+
+        season_num = int(extracted_season)
+        if season_num is not None and season_num > 0:
+            print_info('Season might be: {0}'.format(season_num))
+            return 'Volume ' + format_num(season_num)
+    return 'Volume 0'
+
+def parse_manga_title(filename):
+    """ Attempts to parse manga title from filename. Will strip out separators at start of string. If no title is found, returns empty string"""
+    print_info('Attempting to parse manga title from {0}'.format(filename))
+    for regex in MANGA_TITLE_REGEX:
+        m = re.search(regex, filename)
+
+        if m is None:
+            continue
+
+        extracted_title = m.group('Series')
+        return clean_episode_title(extracted_title)
+    return ''
+
+def parse_chapter(filename):
+    """ Given a filename, matches chapter and returns episode in Chapter 01 format. This will ignore episode parts. Returns None if no matches."""
+    print_info('Extracting chapter from {0}'.format(filename))
+    for regex in MANGA_CHAPTER_REGEX:
+        m = re.search(regex, filename)
+
+        if m is None:
+            continue
+
+        extracted_ep = m.group('Chapter')
+        print_info('Extracted chapter: {0}'.format(extracted_ep))
+
+        ep_num = int(extracted_ep)
+        if ep_num is not None and ep_num > 0:
+            print_info('Chapter might be: {0}'.format(ep_num))
+            return 'Chapter ' + format_num(ep_num)
+
+    return None
+
 def parse_media_info(filename):
     """ Given a filename, match media info and return MediaInfo object. Returns empty MediaInfo if no matches."""
     print_info('Extracting hash from {0}'.format(filename))
@@ -321,6 +429,10 @@ def is_media_file(file):
 def is_subtitle(file):
     """ Returns true if file is a known subtitle extension. This list is self-maintained. """
     return file.lower().endswith(SUBTITLE_EXTENSIONS)
+
+def is_manga(file):
+    """ Returns true if file is a known manga file extension. This list is self-maintained. """
+    return file.lower().endswith(MANGA_EXTENSIONS)
 
 def format_num(num):
     """ Formats a number to have leading 0 if below 10 """

@@ -1,8 +1,7 @@
-''' This script should be run on a directory which will generate a test case file 
-    that can be loaded into the renametest.py'''
+""" This script should be run on a directory which will generate a test case file
+    that can be loaded into the renametest.py"""
 import os
 from pathlib import Path
-import parse as parser
 import shutil
 
 verbose = False
@@ -13,7 +12,7 @@ def print_log(val):
 
 
 def create_test_base(file, root_dir):
-    ''' Creates and returns a new base directory for data creation for a given testcase.'''
+    """ Creates and returns a new base directory for data creation for a given testcase."""
     base_dir = os.path.split(file.split('-testcase.txt')[0])[-1]
     print_log('base_dir: {0}'.format(base_dir))
     new_dir = os.path.join(root_dir, base_dir)
