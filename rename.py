@@ -218,8 +218,6 @@ def generate_episode_infos(root_dir):
                     else:
                         info.season = 'S' + parse.format_num(int(season_num))
                 elif manga_mode:
-                    pass
-                else:
                     info.episode = parse.parse_chapter(filename)
                     info.extension = parts[1].replace('.', '')
                     info.title = parse.parse_manga_title(filename)
@@ -227,6 +225,17 @@ def generate_episode_infos(root_dir):
                         info.season = parse.parse_volume(filename)
                     else:
                         info.season = 'Volume ' + parse.format_num(int(season_num))
+                else:
+                    info.episode = parse.parse_episode(filename)
+                    info.part_num = parse.parse_episode_part(filename)
+                    info.subtitle = find_subtitle(root_dir, filename)
+                    info.extension = parts[1].replace('.', '')
+                    info.title = parse.parse_episode_title(filename)
+                    # info.media_info = parse.parse_media_info(filename) # TODO: Implement test cases to handle for non-anime
+                    if season_num is None:
+                        info.season = parse.parse_season(filename)
+                    else:
+                        info.season = 'S' + parse.format_num(int(season_num))
                 file_infos.append(info)
     return file_infos
 
