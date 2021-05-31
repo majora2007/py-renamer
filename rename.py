@@ -24,6 +24,7 @@ def init_args():
 
     # Optional Parameters
     parser.add_argument('--season', required=False, nargs=1, help="Season for rename")
+    parser.add_argument('--dir', required=False, nargs=1, help="If passed, will use the supplied directory for scanning")
     parser.add_argument('--eps_per_file', required=False, nargs=1, help="Number of episodes per file")
     parser.add_argument('--dry', required=False, action='store_true',
                         help="Perform a dry run. Does not perform a rename")
@@ -94,7 +95,7 @@ def generate_derived_season_renames(infos):
         else:
             sep_and_title = ' - ' + info.title
 
-        episode = info.episode
+        episode = (' ' if manga_mode else '') + info.episode
         if offset != 0:
             num = (int(
                 info.episode.replace('E', '')) + offset) or 1  # Default to 1 if we go <= 0, as episodes min should be 1
@@ -127,7 +128,12 @@ def generate_season_map_file_renames(infos):
     """ Uses a renamer suitable for handling abs numbered files and splitting them into seasoned based on their number. """
     renames = []
     for info in infos:
-        episode_num = int(info.episode.split('E')[1])
+        episode_num = 0
+        if manga_mode:
+            episode_num = int(info.episode.split('Chapter ')[1])
+        else:
+            episode_num = int(info.episode.split('E')[1])
+
         bucket_index = 0
         sum = 0
         # Find what bucket episode_num fits in. We use +1 because 
@@ -142,8 +148,9 @@ def generate_season_map_file_renames(infos):
                 # print('Sum Until: {0}'.format(sum_until_bucket))
                 # print('Delta: {0}'.format(delta))
                 # episode_num = episode_num - delta
-                episode_seg = 'E' + parse.format_num(delta)
-                season_seg = 'S' + parse.format_num(bucket_index + 1)
+
+                episode_seg = ('E' if not manga_mode else 'Chapter ') + parse.format_num(delta)
+                season_seg = ('S' if not manga_mode else 'Volume ') + parse.format_num(bucket_index + 1)
                 if len(info.title) == 0:
                     sep_and_title = ''
                 else:
@@ -160,6 +167,45 @@ def generate_season_map_file_renames(infos):
 
     return renames
 
+def generate_season_map_file_renames_for_manga(infos):
+    """ Uses a renamer suitable for handling abs numbered files and splitting them into seasoned based on their number.
+    This will continue chapter numbers after a volume boundary hit """
+    renames = []
+    for info in infos:
+        episode_num = 0
+        if manga_mode:
+            episode_num = int(info.episode.split('Chapter ')[1])
+        else:
+            episode_num = int(info.episode.split('E')[1])
+
+        bucket_index = 0
+        sum = 0
+        # Find what bucket episode_num fits in. We use +1 because
+        for idx, val in enumerate(season_maps):
+            sum += val
+            # print('Is {0} <= {1}'.format(episode_num, sum))
+            if episode_num <= sum:
+                print('Episode {0} maps to bucket {1} ({2} episodes)'.format(episode_num, idx, val))
+                bucket_index = idx
+                sum_until_bucket = sum_until(season_maps, idx)
+                delta = abs(episode_num - sum_until_bucket)
+                # print('Sum Until: {0}'.format(sum_until_bucket))
+                # print('Delta: {0}'.format(delta))
+                # episode_num = episode_num - delta
+
+                episode_seg = ('E' if not manga_mode else 'Chapter ') + parse.format_num(episode_num)
+                season_seg = ('S' if not manga_mode else 'Volume ') + parse.format_num(bucket_index + 1)
+                if len(info.title) == 0:
+                    sep_and_title = ''
+                else:
+                    sep_and_title = ' - ' + info.title
+
+                new_name = show_name + ' - ' + season_seg + ' ' + episode_seg + sep_and_title + '.' + info.extension
+
+                renames.append(EpisodeRename(info.original_filename, new_name))
+                break
+
+    return renames
 
 def generate_media_info_format(media_info):
     """ Returns a formatted string from a media info object """
@@ -188,7 +234,10 @@ def generate_renames(infos):
         renames = generate_multiple_part_per_file_renames(infos)
     elif len(season_maps) > 0:
         print('Using Season Maps Renamer')
-        renames = generate_season_map_file_renames(infos)
+        if manga_mode:
+            renames = generate_season_map_file_renames_for_manga(infos)
+        else:
+            renames = generate_season_map_file_renames(infos)
     else:
         print('Using Derived Season Renamer')
         renames = generate_derived_season_renames(infos)
@@ -200,7 +249,7 @@ def generate_episode_infos(root_dir):
     for _, _, files in os.walk(root_dir, topdown=False):
         files.sort()
         for file in files:
-            if parse.is_media_file(file):
+            if parse.is_media_file(file) or (parse.is_manga(file) and manga_mode):
                 parts = os.path.splitext(file)
                 filename = parts[0]
                 info = EpisodeInfo(root_dir, filename)
@@ -289,6 +338,11 @@ if __name__ == '__main__':
     print('Anime Mode: {0}'.format(anime_mode))
 
     root_dir = os.getcwd()
+    override_dir = get_argument(args.dir, None)
+    if override_dir != '' and override_dir is not None:
+        root_dir = override_dir
+        print('Overriding directory to: {}'.format(root_dir))
+
     file_infos = generate_episode_infos(root_dir)
 
     renames = generate_renames(file_infos)
