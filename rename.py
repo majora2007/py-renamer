@@ -31,7 +31,9 @@ def init_args():
     parser.add_argument('--season_maps', required=False, nargs=1,
                         help="A set of episodes per season. ie) [2,2,1] -> S1 has 2 ep, S2 has 2 eps, S3 has 1")
     parser.add_argument('--anime', required=False, action='store_true',
-                        help='Use anime logic for reanming files. Keeps hashes and scene groups on rename.')
+                        help='Use anime logic for renaming files. Keeps hashes and scene groups on rename.')
+    parser.add_argument('--manga', required=False, action='store_true',
+                        help='Use manga logic for renaming files. Aims for Series - Volume XX Chapter XX')
     parser.add_argument('--offset', required=False, nargs=1,
                         help="If passed, episodes will start at the offset. ie) episode 1 with offset of 4 writes as episode 5. Useful for combining seasons together. Does not work with season maps.")
     return parser.parse_args()
