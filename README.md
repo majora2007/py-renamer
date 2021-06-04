@@ -18,5 +18,6 @@ This is the minimum required command to execute. You can get more commands from 
 |   verbose	|   x	        |   	Print debug information         |   	  None      |   	Just supply the flag    |
 |   season_maps	|   x	        |   	Maps ordered episodes into Seasons. Useful for absolute to seasons         |   	  Array of Numbers      |   	ie) [1, 2]. First episode goes to Season 1, next 2 episodes goes to Season 2    |
 |   anime	|   x	        |   	Use anime parsing and renaming rules. Will generate Media Info and Hash and keep scene group         |   	  None      |   	Does not work with eps_per_file    |
+|   manga	|   x	        |   	Use manga parsing and renaming rules. Will generate Series Name - Volume XX Chapter XX        |   	  None      |   	Does not work with eps_per_file, works with season_maps    |
 |   offset	|   x	        |   	If passed, episodes will start at the offset         |   	  Number      |   	ie) episode 1 with offset of 4 writes as episode 5. Useful for combining seasons together. Does not work with season maps.    |
 
